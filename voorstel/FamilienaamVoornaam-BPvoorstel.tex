@@ -9,6 +9,8 @@
 \documentclass{hogent-article}
 
 % Invoegen bibliografiebestand
+\usepackage[backend=biber,style=apa]{biblatex}
+\DeclareLanguageMapping{dutch}{dutch-apa}
 \addbibresource{voorstel.bib}
 
 % Informatie over de opleiding, het vak en soort opdracht
@@ -20,23 +22,15 @@
 % \course{Bachelor thesis}
 % \assignmenttype{Research proposal}
 
-\academicyear{2022-2023} % TODO: pas het academiejaar aan
+\academicyear{2024-2025}
 
-% TODO: Werktitel
-\title{Vul hier de voorgestelde titel van je onderzoek in}
+\title{Stemmen onderscheiden voor Nederlandse Speech-to-Text in de Vlaamse zorgcontext}
 
-% TODO: Studentnaam en emailadres invullen
-\author{Ernst Aarden}
-\email{ernst.aarden@student.hogent.be}
-
-% TODO: Medestudent
-% Gaat het om een bachelorproef in samenwerking met een student in een andere
-% opleiding? Geef dan de naam en emailadres hier
-% \author{Yasmine Alaoui (naam opleiding)}
-% \email{yasmine.alaoui@student.hogent.be}
+\author{Lisa Verhoeyen}
+\email{lisa.verhoeyen@student.hogent.be}
 
 % TODO: Geef de co-promotor op
-\supervisor[Co-promotor]{S. Beekman (Synalco, \href{mailto:sigrid.beekman@synalco.be}{sigrid.beekman@synalco.be})}
+\supervisor[Co-promotor]{J. Campens (HOGENT, \href{mailto:jorrit.campens@hogent.be}{jorrit.campens@hogent.be})}
 
 % Binnen welke specialisatierichting uit 3TI situeert dit onderzoek zich?
 % Kies uit deze lijst:
@@ -49,8 +43,8 @@
 % - Als het onderzoek niet past binnen een van deze domeinen specifieer je deze
 %   zelf
 %
-\specialisation{Mobile \& Enterprise development}
-\keywords{Scheme, World Wide Web, $\lambda$-calculus}
+\specialisation{AI \& Data Engineering}
+\keywords{stemmen onderscheiden, speech-to-text, secondary babytalk}
 
 \begin{document}
 
@@ -65,5 +59,7 @@
 \input{voorstel-inhoud}
 
 \printbibliography[heading=bibintoc]
+
+
 
 \end{document}
