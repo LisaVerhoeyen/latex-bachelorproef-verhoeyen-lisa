@@ -7,6 +7,7 @@
 % Voor een voorstel in het Engels: voeg de documentclass-optie [english] toe.
 % Let op: kan enkel na toestemming van de bachelorproefcoördinator!
 \documentclass{hogent-article}
+\usepackage{xcolor, soul}
 
 % Invoegen bibliografiebestand
 \usepackage[backend=biber,style=apa]{biblatex}
@@ -24,7 +25,7 @@
 
 \academicyear{2024-2025}
 
-\title{Stemmen onderscheiden voor Nederlandse Speech-to-Text in de Vlaamse zorgcontext}
+\title{Stemmen onderscheiden voor het opsporen van elderspeak in de Vlaamse zorgcontext}
 
 \author{Lisa Verhoeyen}
 \email{lisa.verhoeyen@student.hogent.be}
@@ -49,7 +50,7 @@
 \begin{document}
 
 \begin{abstract}
-	Ondanks het feit dat de zorgsector de dag van vandaag vooral op persoonsgerichte zorgverlening focust, ervaren ouderen vaak dat de communicatie te betuttelend is. Dit fenomeen staat bekend als elderspeak of secondary babytalk en om dit tegen te gaan is er van de opleiding verpleegkunde aan HOGENT het initiatief om een applicatie te gebruiken die de studenten erop kan wijzen als ze gebruik maken van elderspeak. Deze applicatie werd reeds gemaakt in voorgaande bachelorproeven, maar ontbreekt nog een aantal functionaliteiten voordat deze gebruikt kan worden in de opleiding. Deze paper heeft als doel de mogelijkheid te bieden om in de applicatie enkel de stem van de zorgverlener te analyseren en signalen van secondary babytalk op te sporen. Dit wordt bereikt aan de hand van het zoeken naar en trainen van modellen die stemmen kunnen onderscheiden. Dit model wordt nadien geïmplementeerd in de applicatie. Het beoogde resultaat van deze paper is een volledig getraind model dat succesvol stemmen kan onderscheiden en geïntegreerd is in de applicatie.
+	Ondanks het feit dat de zorgsector de dag van vandaag vooral op persoonsgerichte zorgverlening focust, ervaren oudere patiënten vaak dat de communicatie te betuttelend is. Dit fenomeen staat bekend als elderspeak of secondary babytalk. Om dit tegen te gaan is er vanuit de opleiding verpleegkunde aan HOGENT het initiatief genomen om een applicatie te gebruiken die de studenten erop wijst als ze gebruik maken van elderspeak. Deze applicatie werd reeds ontworpen in voorgaande bachelorproeven, maar er ontbreken nog een aantal functionaliteiten voordat deze gebruikt kan worden in de opleiding. Deze paper heeft als doel de mogelijkheid te bieden om in de applicatie enkel de stem van de zorgverlener te analyseren en signalen van secondary babytalk op te sporen. Dit wordt bereikt aan de hand van het zoeken naar en trainen van geschikte modellen die stemmen kunnen onderscheiden. Het meest geschikte model wordt nadien geïmplementeerd in de applicatie. Het beoogde resultaat van deze paper is een volledig getraind model dat succesvol stemmen kan onderscheiden en geïntegreerd is in de applicatie.
 \end{abstract}
 
 \tableofcontents
