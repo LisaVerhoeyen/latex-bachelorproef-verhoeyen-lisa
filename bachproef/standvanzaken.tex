@@ -7,45 +7,25 @@
 
 % Pas na deze inleidende paragraaf komt de eerste sectiehoofding.
 
-Dit hoofdstuk bevat je literatuurstudie. De inhoud gaat verder op de inleiding, maar zal het onderwerp van de bachelorproef *diepgaand* uitspitten. De bedoeling is dat de lezer na lezing van dit hoofdstuk helemaal op de hoogte is van de huidige stand van zaken (state-of-the-art) in het onderzoeksdomein. Iemand die niet vertrouwd is met het onderwerp, weet nu voldoende om de rest van het verhaal te kunnen volgen, zonder dat die er nog andere informatie moet over opzoeken \autocite{Pollefliet2011}.
+Dit hoofdstuk geeft een overzicht over de stand van zaken van zowel de applicatie die reeds bestaat in het Zorglab, als de mogelijkheden en modellen die beschikbaar zijn voor het onderscheiden van stemmen in audio.
+Het eerste deel van dit hoofdstuk beschrijft wat studenten van voorgaande jaren al bereikt hebben wat betreft de applicatie. De daaropvolgende delen geven respectievelijk inzicht in de techniek die gebruikt zal worden tijdens het onderzoek en een overzicht van de beschikbare modellen die gebruikt kunnen worden. 
 
-Je verwijst bij elke bewering die je doet, vakterm die je introduceert, enz.\ naar je bronnen. In \LaTeX{} kan dat met het commando \texttt{$\backslash${textcite\{\}}} of \texttt{$\backslash${autocite\{\}}}. Als argument van het commando geef je de ``sleutel'' van een ``record'' in een bibliografische databank in het Bib\LaTeX{}-formaat (een tekstbestand). Als je expliciet naar de auteur verwijst in de zin (narratieve referentie), gebruik je \texttt{$\backslash${}textcite\{\}}. Soms is de auteursnaam niet expliciet een onderdeel van de zin, dan gebruik je \texttt{$\backslash${}autocite\{\}} (referentie tussen haakjes). Dit gebruik je bv.~bij een citaat, of om in het bijschrift van een overgenomen afbeelding, broncode, tabel, enz. te verwijzen naar de bron. In de volgende paragraaf een voorbeeld van elk.
+\section{Voorgaand onderzoek in verband met de applicatie}%
+%TODO: meer uitwerken en papers van studenten effectief eens lezen
+In voorgaande bachelorproeven werd reeds een applicatie ontwikkeld met als doel deze te gebruiken in de opleiding verpleegkunde. Volgens \textcite{Govaerts2022} is het detecteren van elderspeak mogelijk met behulp van PRAAT en Natural Language Processing (NLP). PRAAT is een computerprogramma voor het analyseren, synthetiseren en manipuleren van spraak en werd ontwikkeld sinds 1992 door Paul Boersma en David Weenink \autocite{Govaerts2022}.
 
-\textcite{Knuth1998} schreef een van de standaardwerken over sorteer- en zoekalgoritmen. Experten zijn het erover eens dat cloud computing een interessante opportuniteit vormen, zowel voor gebruikers als voor dienstverleners op vlak van informatietechnologie~\autocite{Creeger2009}.
+Datzelfde jaar werd door \textcite{Gussem2022} geconcludeerd dat elderspeak gedetecteerd kan worden met AI. De software die hiervoor beschikbaar is, is echter gelimiteerd en niet altijd accuraat en kan de stem van de zorgvrager niet wegfilteren voor de analyse \autocite{Gussem2022}.
 
-Let er ook op: het \texttt{cite}-commando voor de punt, dus binnen de zin. Je verwijst meteen naar een bron in de eerste zin die erop gebaseerd is, dus niet pas op het einde van een paragraaf.
+Later onderzocht \textcite{Daems2023} hoe de detectie van elderspeak verbeterd kan worden door het toepassen van een ruisfilter en een stiltefilter. De conclusie omtrent de ruisfilter was dat deze zeker helpt, maar niet alle ruis uit het signaal kan verwijderen \autocite{Daems2023}. Om dit te verbeteren opperde \textcite{Daems2023} dat het gebruik van meerdere microfoons zou kunnen helpen.
+Wanneer het gaat over de stiltefilter, besloot \textcite{Daems2023} dat deze succesvol de stiltes kan detecteren en analyseren, wat het mogelijk maakt om stiltes te verwijderen en andere parameters te verbeteren. \textcite{Daems2023} concludeerde echter ook dat factoren zoals geluidskwaliteit, gesproken dialect, linguïstische verschillen en het doel voor de spraakherkenning de kwaliteit ervan ook sterk beïnvloeden.
 
-\begin{figure}
-  \centering
-  \includegraphics[width=0.8\textwidth]{grail.jpg}
-  \caption[Voorbeeld figuur.]{\label{fig:grail}Voorbeeld van invoegen van een figuur. Zorg altijd voor een uitgebreid bijschrift dat de figuur volledig beschrijft zonder in de tekst te moeten gaan zoeken. Vergeet ook je bronvermelding niet!}
-\end{figure}
+\textcite{Branden2024} zocht naar verdere mogelijkheden om de accuraatheid van elderspeak detectie te verhogen. Uit dit onderzoek kon geconcludeerd worden dat het gebruik van een POS-tagger ervoor zorgde dat de accuraatheid significant verhoogd werd, namelijk van 92.71\% naar 99.48\% \autocite{Branden2024}. POS-tagging is een NLP techniek waarbij woordsoorten worden toegekend aan woorden of tokens en hierbij ook rekening houdt met de context \autocite{Branden2024}.
 
-\begin{listing}
-  \begin{minted}{python}
-    import pandas as pd
-    import seaborn as sns
+Het onderzoek van \textcite{Schryver2024} had als doel om spraak naar tekst om te zetten. Hieruit moest echter de conclusie getrokken worden dat het accuraat omzetten van gesproken naar geschreven tekst nog niet mogelijk is \autocite{Schryver2024}. \textcite{Schryver2024} onderzocht ook of er mogelijkheden zijn om de performantie van de applicatie te kunnen verbeteren aangezien deze momenteel eerder traag is, maar de conclusie was dat dit niet het geval lijkt te zijn.
 
-    penguins = sns.load_dataset('penguins')
-    sns.relplot(data=penguins, x="flipper_length_mm", y="bill_length_mm", hue="species")
-  \end{minted}
-  \caption[Voorbeeld codefragment]{Voorbeeld van het invoegen van een codefragment.}
-\end{listing}
+\section{Onderzoek naar het onderscheiden van stemmen}
+%TODO: nog meer info nodig!
 
-\lipsum[7-20]
-
-\begin{table}
-  \centering
-  \begin{tabular}{lcr}
-    \toprule
-    \textbf{Kolom 1} & \textbf{Kolom 2} & \textbf{Kolom 3} \\
-    $\alpha$         & $\beta$          & $\gamma$         \\
-    \midrule
-    A                & 10.230           & a                \\
-    B                & 45.678           & b                \\
-    C                & 99.987           & c                \\
-    \bottomrule
-  \end{tabular}
-  \caption[Voorbeeld tabel]{\label{tab:example}Voorbeeld van een tabel.}
-\end{table}
+\section{Reeds bestaande modellen}
+%TODO: meer frameworks nodig
 

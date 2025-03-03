@@ -12,13 +12,14 @@
 %   explicit approval!), remove the option "dutch," or replace with "english".
 
 \usepackage{lipsum} % For blind text, can be removed after adding actual content
+\usepackage{xcolor, soul}
 
 %% Pictures to include in the text can be put in the graphics/ folder
 \graphicspath{{../graphics/}}
 
 %% For source code highlighting, requires pygments to be installed
 %% Compile with the -shell-escape flag!
-%% \usepackage[chapter]{minted}
+%\usepackage[chapter]{minted}
 %% If you compile with the make_thesis.{bat,sh} script, use the following
 %% import instead:
 \usepackage[chapter,outputdir=../output]{minted}
@@ -64,6 +65,8 @@
 \hyphenation{back-slash}
 
 %% The bibliography (style and settings are  found in hogentthesis.cls)
+\usepackage[backend=biber,style=apa]{biblatex}
+\DeclareLanguageMapping{dutch}{dutch-apa}
 \addbibresource{bachproef.bib}            %% Bibliography file
 \addbibresource{../voorstel/voorstel.bib} %% Bibliography research proposal
 \defbibheading{bibempty}{}
@@ -152,12 +155,14 @@
 
 Het onderwerp van deze bachelorproef is gebaseerd op een onderzoeksvoorstel dat vooraf werd beoordeeld door de promotor. Dat voorstel is opgenomen in deze bijlage.
 
-%% TODO: 
-%\section*{Samenvatting}
+
+\section*{Samenvatting}
 
 % Kopieer en plak hier de samenvatting (abstract) van je onderzoeksvoorstel.
+Ondanks het feit dat de zorgsector de dag van vandaag vooral op persoonsgerichte zorgverlening focust, ervaren oudere patiënten vaak dat de communicatie te betuttelend is. Dit fenomeen staat bekend als elderspeak of secondary babytalk. Om dit tegen te gaan is er vanuit de opleiding verpleegkunde aan HOGENT het initiatief genomen om een applicatie te gebruiken die de studenten erop wijst als ze gebruik maken van elderspeak. Deze applicatie werd reeds ontworpen in voorgaande bachelorproeven, maar er ontbreken nog een aantal functionaliteiten voordat deze gebruikt kan worden in de opleiding. Deze paper heeft als doel de mogelijkheid te bieden om in de applicatie enkel de stem van de zorgverlener te analyseren en signalen van secondary babytalk op te sporen. Dit wordt bereikt aan de hand van het zoeken naar en trainen van geschikte modellen die stemmen kunnen onderscheiden. Het meest geschikte model wordt nadien geïmplementeerd in de applicatie. Het beoogde resultaat van deze paper is een volledig getraind model dat succesvol stemmen kan onderscheiden en geïntegreerd is in de applicatie.
 
 % Verwijzing naar het bestand met de inhoud van het onderzoeksvoorstel
+% TODO: 
 \input{../voorstel/voorstel-inhoud}
 
 %%---------- Andere bijlagen --------------------------------------------------
