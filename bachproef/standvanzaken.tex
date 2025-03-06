@@ -25,13 +25,19 @@ Het onderzoek van \textcite{Schryver2024} had als doel om spraak naar tekst om t
 
 \section{Onderzoek naar het onderscheiden van stemmen}
 %TODO: nog meer info nodig!
-Wanneer gezocht wordt naar manieren om stemmen te onderscheiden, is "speaker diarization" een term die vaak vernoemd wordt. Speaker diarization wordt beschreven als het bepalen wie wanneer spreekt in een audio of video opname waarvaan niet geweten is hoe vaak gesproken wordt en hoeveel sprekers aanwezig zijn \textcite{AngueraMiro2012}.
+Wanneer gezocht wordt naar manieren om stemmen te onderscheiden, is "speaker diarization" een term die vaak vernoemd wordt. Speaker diarization wordt beschreven als het bepalen wie wanneer spreekt in een audio of video opname waarvaan niet geweten is hoe vaak gesproken wordt en hoeveel sprekers aanwezig zijn \autocite{AngueraMiro2012}. Het feit dat er onbekende factoren in de fragmenten aanwezig zijn zorgt ervoor dat unsupervised identificatie van elke spreker in een audio fragment vereist is en de intervallen waarin deze spreker actief is \autocite{AngueraMiro2012}. Volgens \textcite{AngueraMiro2012} kunnen de speaker diarization technieken op gedeeld worden in twee categorieën, namelijk bottom-up en top-down modellen. Bottom-up modellen worden geïnitialiseerd met een grote hoeveelheid clusters, vaak meer dan het verwachte aantal sprekers, en convergeren op een iteratieve manier naar een optimaal aantal clusters die gewoonlijk overeen komt met de hoeveelheid sprekers \autocite{AngueraMiro2012}. Top-down modellen worden geïnitialiseerd met een klein aantal clusters, gewoonlijk een cluster, en convergeren dan ook op een iteratieve manier naar een optimaal aantal clusters \autocite{AngueraMiro2012}. Volgens \textcite{AngueraMiro2012} worden de bottom-up modellen het vaakst gebruikt.
+
+In \textcite{Khoma2023} wordt ook gesproken over twee categorieën van diarization, maar hier worden ze anders opgedeeld. De eerste categorie die in \textcite{Khoma2023} vermeld wordt is unsupervised diarization. Deze techniek maakt gebruik van unsupervised machine learning algoritmen om elke spreker een label te geven waarbij niet geweten is welke persoon bij welk label hoort \autocite{Khoma2023}. De tweede categorie is supervised diarization, waarin diarization methoden gecombineerd worden met identificatie technieken om zo een of meerdere personen uit een opname te kunnen herkennen \autocite{Khoma2023}. Deze techniek heeft als belangrijke eigenaardigheid dat het nodig is om de uitingen van meer dan een persoon te analyseren\autocite{Khoma2023}. Unsupervised diarization maakt gebruik van clustering methodes waarbij gelijkaardige segmenten onderverdeeld worden in categorieën, terwijl supervised diarization gebruik maakt van classificatie, waarbij de verschillende segmenten vergeleken worden met stemvoorbeelden \autocite{Khoma2023}.
+
+Speaker diarization is een techniek die gebruikt kan worden voor verschillende doeleinden, zoals o.a. spreker indexering, herkennen van een spreker en hulp bij speech-to-text transcriptie \autocite{AngueraMiro2012}. Dit maakt het een zeer interessante techniek om te gebruiken voor deze bachelorproef. De hieronder besproken modellen zijn dus ook speaker diarization modellen.
 
 \section{Reeds bestaande modellen}
-%TODO: meer frameworks nodig
+Wanneer het aankomt op reeds bestaande modellen, moet er gezocht worden naar twee zaken. De eerste is meer voor de hand liggend, namelijk modellen die instaan voor de speaker diarization. De tweede is echter ook belangrijk, namelijk modellen die instaan om de uitkomst van de eerste modellen te evalueren. Deze zijn belangrijk om te weten of het scheiden van de stemmen succesvol gebeurd is en te bepalen hoe goed het model is.
 
 \subsection{Diarization modellen}
+Voor deze bachelorproef worden verschillende modellen overwogen om er zo een gegronde keuze te kunnen maken welk model geïmplementeerd kan worden in de applicatie.
 
+%TODO: aanvullen met modellen
 
 \subsection{Evaluatie van modellen voor diarization}
-
+%TODO
