@@ -5,32 +5,33 @@
 \chapter{\IfLanguageName{dutch}{Inleiding}{Introduction}}%
 \label{ch:inleiding}
 
-De inleiding moet de lezer net genoeg informatie verschaffen om het onderwerp te begrijpen en in te zien waarom de onderzoeksvraag de moeite waard is om te onderzoeken. In de inleiding ga je literatuurverwijzingen beperken, zodat de tekst vlot leesbaar blijft. Je kan de inleiding verder onderverdelen in secties als dit de tekst verduidelijkt. Zaken die aan bod kunnen komen in de inleiding~\autocite{Pollefliet2011}:
+De dag van vandaag focust de zorg- en welzijnssector vooral op persoonsgerichte zorgverlening. Dit impliceert dat de zorgverleners hun communicatiestijl aanpassen aan de zorgvragers. In de context van zorgverlening bij ouderen wordt de communicatiestijl echter vaak als te betuttelend ervaren. Men noemt dit fenomeen secondary babytalk of elderspeak. Om dit tegen te gaan, wil de opleiding verpleegkunde aan HOGENT gebruik maken van een applicatie die zou helpen om via speech-to-text de secondary babytalk op te sporen. Aan de hand daarvan zouden ze dan feedback kunnen geven aan de studenten tijdens praktijksessies in het Zorglab.
 
-\begin{itemize}
-  \item context, achtergrond
-  \item afbakenen van het onderwerp
-  \item verantwoording van het onderwerp, methodologie
-  \item probleemstelling
-  \item onderzoeksdoelstelling
-  \item onderzoeksvraag
-  \item \ldots
-\end{itemize}
+Het Zorglab is een lokaal dat voornamelijk gebruikt wordt tijdens de praktijklessen in de opleiding verpleegkunde. Het lokaal bestaat uit 2 ruimtes waarin camera's hangen. De studenten kunnen hier microfoons dragen zodat medestudenten in een derde ruimte kunnen volgen wat er gebeurt en ondertussen feedback krijgen van de lector. Hier zou dus gebruik gemaakt worden van de applicatie om snel de voorvallen van elderspeak op te sommen zodat de studenten ook feedback kunnen krijgen op wat ze zelf gedaan hebben en niet enkel op wat studenten in een andere groep doen.
 
 \section{\IfLanguageName{dutch}{Probleemstelling}{Problem Statement}}%
 \label{sec:probleemstelling}
 
-Uit je probleemstelling moet duidelijk zijn dat je onderzoek een meerwaarde heeft voor een concrete doelgroep. De doelgroep moet goed gedefinieerd en afgelijnd zijn. Doelgroepen als ``bedrijven,'' ``KMO's'', systeembeheerders, enz.~zijn nog te vaag. Als je een lijstje kan maken van de personen/organisaties die een meerwaarde zullen vinden in deze bachelorproef (dit is eigenlijk je steekproefkader), dan is dat een indicatie dat de doelgroep goed gedefinieerd is. Dit kan een enkel bedrijf zijn of zelfs één persoon (je co-promotor/opdrachtgever).
+In voorgaande jaren werd in de bachelorproeven van \textcite{Govaerts2022}, \textcite{Gussem2022} en \textcite{Daems2023} reeds succesvol een applicatie ontwikkeld die signalen van elderspeak kan herkennen aan de hand van kenmerken zoals toonhoogte en stemvolume. In deze applicatie kan men een audiofragment uploaden en dit aan de hand van een aantal parameters laten analyseren. In de jaren die daarop volgden werd er in de bachelorproeven van \textcite{Branden2024}, \textcite{Coetsiers2024} en \textcite{Schryver2024} onderzoek gedaan naar het integreren van een model dat spraak kan omzetten naar tekst, maar hier werd aangetoond dat de accuraatheid van bestaande modellen onvoldoende blijkt te zijn om een kwaliteitsvolle transcriptie uit te voeren van gesproken Nederlands.
+
+Ondanks het feit dat de applicatie ondertussen al ver gevorderd is, ontbreken er nog steeds een aantal zaken, zoals de speech-to-text functie waar door \textcite{Schryver2024} reeds naar gezocht werd. Een andere functie die nog ontbreekt is het onderscheid maken tussen de stemmen van de verpleegkundige in opleiding en de patiënt. De huidige applicatie zoekt naar signalen van secondary babytalk in het volledige audiofragment dat in het Zorglab opgenomen wordt, wat wil zeggen dat de delen van de patiënt ook geanalyseerd worden. Dit is echter niet de bedoeling, aangezien de feedback enkel nodig is voor de student. Hierdoor is er dus vraag naar een functie die stem van de student uit de audio kan filteren, zodat enkel deze geanalyseerd wordt. Dit zou eventueel ook kunnen leiden tot het succesvol implementeren van een speech-to-text functie in de toekomst, aangezien dit de complexiteit van het audiofragment verlaagt.
 
 \section{\IfLanguageName{dutch}{Onderzoeksvraag}{Research question}}%
 \label{sec:onderzoeksvraag}
 
-Wees zo concreet mogelijk bij het formuleren van je onderzoeksvraag. Een onderzoeksvraag is trouwens iets waar nog niemand op dit moment een antwoord heeft (voor zover je kan nagaan). Het opzoeken van bestaande informatie (bv. ``welke tools bestaan er voor deze toepassing?'') is dus geen onderzoeksvraag. Je kan de onderzoeksvraag verder specifiëren in deelvragen. Bv.~als je onderzoek gaat over performantiemetingen, dan 
+Concreet wordt er voor deze bachelorproef de volgende onderzoeksvraag gesteld: hoe kan ervoor gezorgd worden dat de applicatie onderscheid maakt tussen de stem van de zorgverlener en die van de zorgvrager? Dit kan opgesplitst worden in verschillende deelvragen:
+\begin{itemize}
+	\item Wat zijn reeds bestaande modellen en python libraries die stemmen kunnen herkennen en onderscheiden?
+	\item Is het mogelijk om de reeds bestaande modellen (die meestal op Engelstalige audio getraind zijn) te trainen om Vlaamse sprekers te kunnen onderscheiden?
+	\item Wat zijn de beste parameters om een model te trainen op het onderscheiden en afzonderen van stemmen?
+	\item Is het mogelijk om het getrainde model in de applicatie te integreren?
+\end{itemize} 
 
 \section{\IfLanguageName{dutch}{Onderzoeksdoelstelling}{Research objective}}%
 \label{sec:onderzoeksdoelstelling}
 
-Wat is het beoogde resultaat van je bachelorproef? Wat zijn de criteria voor succes? Beschrijf die zo concreet mogelijk. Gaat het bv.\ om een proof-of-concept, een prototype, een verslag met aanbevelingen, een vergelijkende studie, enz.
+Het beoogde resultaat van deze bachelorproef bestaat uit twee delen. Het eerste deel is een getraind model dat succesvol stemmen in audiofragmenten met Vlaamstalige sprekers kan onderscheiden.\\
+Het tweede deel is een succesvolle integratie van dit model in de applicatie van het Zorglab zodat deze de functionaliteit heeft om stemmen te onderscheiden en dit model eventueel gebruikt kan worden voor verdere toepassingen rond speech-to-text in de applicatie.
 
 \section{\IfLanguageName{dutch}{Opzet van deze bachelorproef}{Structure of this bachelor thesis}}%
 \label{sec:opzet-bachelorproef}
@@ -41,7 +42,7 @@ Wat is het beoogde resultaat van je bachelorproef? Wat zijn de criteria voor suc
 
 De rest van deze bachelorproef is als volgt opgebouwd:
 
-In Hoofdstuk~\ref{ch:stand-van-zaken} wordt een overzicht gegeven van de stand van zaken binnen het onderzoeksdomein, op basis van een literatuurstudie.
+In Hoofdstuk~\ref{ch:stand-van-zaken} wordt een overzicht gegeven van de stand van zaken op basis van een literatuurstudie. Dit houdt in dat er wordt besproken wat de applicatie al kan en wat er op dit moment al mogelijk is als het gaat over onderscheiden van stemmen.
 
 In Hoofdstuk~\ref{ch:methodologie} wordt de methodologie toegelicht en worden de gebruikte onderzoekstechnieken besproken om een antwoord te kunnen formuleren op de onderzoeksvragen.
 
