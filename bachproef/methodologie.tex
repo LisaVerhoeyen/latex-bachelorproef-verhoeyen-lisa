@@ -27,24 +27,23 @@
 %% en geef het een gepaste titel.
 
 Dit hoofdstuk bespreekt kort de fasen van het onderzoek. Per fase word kort besproken wat de doelstelling is en welke keuzes gemaakt werden. In Figuur 3.1 wordt een overzicht getoond van de verschillende fasen en hoe deze elkaar opvolgen.
-\begin{figure}
-	\centering
-	\includegraphics[width=\columnwidth]{./img/verloop.png}
-	\caption{Voorstelling van de fasen van de bachelorproef en hun onderlinge volgorde}
-\end{figure}
 
-
-\paragraph{Literatuurstudie en modellen kiezen}
+\paragraph{Literatuurstudie en modellen zoeken}
 Deze fase bestaat uit het opzoeken van info omtrent diarization en welke bestaande modellen hier al voor zijn. Hieruit worden de modellen gekozen die het meeste potentieel lijken te hebben om tot een goed eindresultaat te komen en wordt gekeken wat de beste manier van aanpakken is.\\
 Naast het zoeken naar modellen, wordt ook gezocht naar methoden om deze modellen te evalueren. Dit zorgt ervoor dat er een gegronde keuze kan gemaakt worden om verder te gaan met een specifiek model. Dit zorgt er in een latere fase ook voor dat er gekozen kan worden voor de beste parameters voor het model.
 
 \paragraph{Modellen trainen}
-In deze fase worden de modellen die in de eerste fase gekozen werden getraind met Vlaamse audiofragmenten. 
-%TODO 
+In deze fase worden de modellen die in de eerste fase gekozen werden getraind met Vlaamse audiofragmenten in drie stappen. In eerste instantie gebeurt dit met eenvoudige fragmenten die weinig tot geen overlap en ruis bevatten. Hierna wordt voor complexere audio gekozen die meer overlap bevat om in de derde stap te eindigen met audio die zowel overlap als ruis bevat.\\
+Bij elk van deze trainingsstappen wordt aan de hand van evaluatiemethoden die gevonden werden in de eerste fase bijgehouden hoe goed elk model scoort.
 
 \paragraph{Finetunen en evalueren}
-In deze fase worden de getrainde modellen uit voorgaande fase geëvalueerd aan de hand van evaluatiemethoden die gevonden werden in de eerste fase. Op basis hiervan wordt het model gekozen dat de beste resultaten oplevert.\\
-Na het maken van de keuze worden de parameters van het gekozen model gefinetuned om zo het best mogelijke resultaat te kunnen bekomen. Voor dit finetunen zal ook gebruikt gemaakt worden van de evaluatiemethoden die eerder vermeld werden.
+In deze fase van het onderzoek worden de modellen die getraind werden met elkaar vergeleken aan de hand van de evaluatiescores uit de voorgaande fase. Op basis hiervan wordt het beste model gekozen. Hierna zullen de parameters van het gekozen model geëvalueerd en gefinetuned worden om zo het best mogelijke resultaat te bekomen.
 
 \paragraph{Implementatie in de applicatie}
 In deze fase zal het model opgeslagen worden en geïmplementeerd worden in de broncode van de reeds bestaande applicatie. Er zal ook grondig getest worden of het model hierin het beoogde resultaat heeft.
+
+\begin{figure}
+	\centering
+	\includegraphics[scale=0.75]{./img/verloop.png}
+	\caption{Voorstelling van de fasen van de bachelorproef en hun onderlinge volgorde}
+\end{figure}
