@@ -7,9 +7,41 @@
 
 \section{Geteste modellen}
 \label{sec:modellen}
-Na het opzoeken van bestaande opties werd gekozen om 3 verschillende modellen uit te testen. Het eerste model dat getest werd is Speaker-Diarization van \textcite{DongLu}. Dit is een model dat gebaseerd is op VGG-Speaker-recognition en UIS-RNN. Na wat onderzoek bleek dat de combinatie van beide frameworks en het trainen zelf nog van 0 zouden moeten gebeuren, wat veel tijd in beslag zou nemen, dus werd er gekozen om hier voor deze bachelorproef geen gebruik van te maken.
+Na het opzoeken van bestaande opties werd gekozen om 3 verschillende modellen uit te testen. Het eerste model dat getest werd is Speaker-Diarization van \textcite{DongLu}. Dit is een model dat gebaseerd is op VGG-Speaker-recognition en UIS-RNN. Na wat onderzoek bleek dat de combinatie van beide frameworks en het trainen zelf nog van nul zouden moeten gebeuren, wat veel tijd in beslag zou nemen, dus werd er gekozen om hier voor deze bachelorproef geen gebruik van te maken.
 Het tweede model dat getest werd, is Simple Diarizer van \textcite{Chau}. Dit leek op het eerste zicht een goed model, maar na tijdens het testen bleek dat dit model gebruik maakt van SpeechBrain. SpeechBrain is een "all-in-one speech toolkit" die ontwikkeld is om onderzoek naar en het ontwikkelen van neurale spraakverwerkingstechnologieën gemakkelijker te maken \autocite{speechbrain}. Het gebruik hiervan bracht echter het probleem met zich mee dat admin rechten nodig waren om er gebruik van te kunnen maken, dus werd er besloten om toch niet met dit model verder te gaan.
 Het laatste model dat getest werd was pyannote-audio van \textcite{Bredin2024}. Dit model werd getest op een vlaams audio fragment en gaf als resultaat een de start- en eindtijden voor elke spreker weer. Er is echter geen optie voorzien om dit om te zetten naar audio-fragmenten. Dit probleem was eenvoudig op te lossen door een externe python library te gebruiken, namelijk pydub. Na het beluisteren van de audiofragmenten bleek dat deze nog niet zeer accuraat waren en dat er dus nog training nodig was, maar het resultaat was al een zeer goed begin. aangezien pyannote-audio voorzien is om nog verder getraind te worden, werd er gekozen om met dit model verder te gaan. De resultaten hiervan worden in de volgende secties besproken.
+
+\section{Voorbereiden van de data}
+\label{sec:data}
+Om een pyannote.audio model te trainen is een pyannote databank nodig. Hoe je deze juist kan opstellen staat beschreven op \textcite{BredinDatabase} voor verschillende types modellen. Hier wordt specifiek gebruik gemaakt van de set-up voor een het trainen van een speaker diarization model.
+
+De basis van de databank is een YAML bestand waarin een databank en een protocol staan. De databank verwijst naar de plaats waar de audio bestanden opgeslagen staan in de vorm van wav bestanden. Het protocol bestaat uit 3 subsets, namelijk een train subset die gebruikt wordt om het model te trainen, een development subset die gebruikt wordt als validatie en een test subset die gebruikt wordt voor de evaluatie van het model. Elk van deze subsets verwijzen naar een .rttm, .uem en .lst bestand. Het .rttm bestand bevat de annotatie van de audiofragmenten die gebruikt worden in de subset, het .uem bestand bevat de informatie over welke delen van de audio bestanden geannoteerd zijn voor de subset en het .lst bestand bevat een lijst met de namen van bestanden die gebtuikt worden in de subset. De uiteindelijke setup van het YAML bestand is te zien in codefragment 4.1.
+
+\begin{minted}{yaml}
+	\caption{codefragment 4.1: Code voor het configuratie bestand van de pyannote databank}
+	Databases:
+		BP: 
+			- ../training_database/wavs/{uri}.wav
+	
+	Protocols:
+		BP:
+			SpeakerDiarization:
+				VlaamseAudio:
+					scope: file
+					train:
+						uri: ../training_database/lists/train.lst
+						annotation: ../training_database/rttms/train.rttm
+						annotated: ../training_database/uems/train.uem
+					development:
+						uri: ../training_database/lists/development.lst
+						annotation: ../training_database/rttms/development.rttm
+						annotated: ../training_database/uems/development.uem
+					test:
+						uri: ../training_database/lists/test.lst
+						annotation: ../training_database/rttms/test.rttm
+						annotated: ../training_database/uems/test.uem
+\end{minted}
+
 
 \section{Trainen van het gekozen model}
 \label{sec:trainen}
