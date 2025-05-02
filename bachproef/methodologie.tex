@@ -30,18 +30,19 @@ Dit hoofdstuk bespreekt kort de fasen van het onderzoek. Per fase word kort besp
 
 \paragraph{Literatuurstudie en modellen zoeken}
 Deze fase bestaat uit het opzoeken van info omtrent diarization en welke bestaande modellen hier al voor zijn. Hieruit worden de modellen gekozen die het meeste potentieel lijken te hebben om tot een goed eindresultaat te komen en wordt gekeken wat de beste manier van aanpakken is.\\
-Naast het zoeken naar modellen, wordt ook gezocht naar methoden om deze modellen te evalueren. Dit zorgt ervoor dat er een gegronde keuze kan gemaakt worden om verder te gaan met een specifiek model. Dit zorgt er in een latere fase ook voor dat er gekozen kan worden voor de beste parameters voor het model.\\
-De gevonden modellen worden getest aan de hand van een specifiek audiofragment. Afhankelijk van de bruikbaarheid van het model en hoe succesvol het onderscheiden van stemmen reeds is, wordt het model al dan niet gebruikt worden om te trainen.
+Naast het zoeken naar modellen, wordt ook gezocht naar methoden om deze modellen te evalueren. Dit zorgt ervoor dat er een gegronde keuze kan gemaakt worden om verder te gaan met een specifiek model. Dit zorgt er in een latere fase ook voor dat er gekozen kan worden voor de beste parameters voor het model.
 
-\paragraph{Model trainen}
-In deze fase worden de modellen die in de eerste fase gekozen werden getraind met Vlaamse audiofragmenten. In eerste instantie gebeurt dit met korte, eenvoudige fragmenten die weinig tot geen overlap en ruis bevatten. Hierna wordt voor complexere audio gekozen die meer overlap bevat om in de derde stap te eindigen met audio die zowel overlap als ruis bevat.\\
-Bij elk van deze trainingsstappen wordt aan de hand van evaluatiemethoden die gevonden werden in de eerste fase bijgehouden hoe goed elk model scoort.
+\paragraph{Modellen testen}
+Tijdens deze fase wordt getest hoe bruikbaar de gevonden modellen effectief zijn en wat het beste model is om mee verder te gaan. Dit wordt gedaan door eerst te kijken naar het gemak om het model te installeren of downloaden. Hierna wordt een audiofragment gegeven aan de modellen en wordt gekeken naar de accuraatheid waarmee elk model de stemmen in dit fragment al kan onderscheiden. Uiteindelijk wordt er ook gekeken naar de mogelijkheid om het model verder te trainen om een beter resultaat te kunnen bekomen. Op basis van deze criteria wordt dan gekozen met welk model verder gegaan wordt in de volgende fasen.
 
-\paragraph{Finetunen en evalueren}
-In deze fase van het onderzoek worden de modellen die getraind werden met elkaar vergeleken aan de hand van de evaluatiescores uit de voorgaande fase. Op basis hiervan wordt het beste model gekozen. Hierna zullen de parameters van het gekozen model geëvalueerd en gefinetuned worden om zo het best mogelijke resultaat te bekomen.
+\paragraph{Voorbereiden van de trainingsdata}
+In deze fase wordt gezocht naar bruikbare Vlaamse audiofragmenten. Voornamelijk wordt gezocht naar Vlaamse televisieprogramma's en podcasts op \url{hetarchief.be} en YouTube. Op basis van de gevonden audio worden dan rttm- en uem-bestanden geschreven en afhankelijk van het gekozen model op de juiste manier opgeslagen. Rttm (Rich Transcription Time Marked) is een tekstgebaseerd bestandstype die bestaat uit tijdsmarkeringen die aangeven wanneer een woord of zin start en eindigt en die voornamelijk gebruikt wordt in spraak herkennende software \autocite{filext}. Uem (Un-partitioned Evaluation Map) bestanden die gebruikt worden om aan te duiden welke delen van de audiobestanden gebruikt zijn om de rttm-bestanden op te stellen \autocite{Ryant}.
+
+\paragraph{Model trainen en finetunen}
+Tijdens deze fase wordt het gekozen model getraind aan de hand van de data uit de vorige fase. Voor en na het trainen wordt het model geëvalueerd aan de hand van methoden die in de eerste fase gevonden werden om te kijken of het trainen het model accurater maakt dat het was voor het trainen. Hierna zullen de parameters van het model verder gefinetuned worden, waarna de accuraatheid opnieuw geëvalueerd wordt en eventueel meer finetuning plaatsvindt, tot een zo accuraat mogelijk model bekomen wordt.
 
 \paragraph{Implementatie in de applicatie}
-In deze fase zal het model opgeslagen worden en geïmplementeerd worden in de broncode van de reeds bestaande applicatie. Er zal ook grondig getest worden of het model hierin het beoogde resultaat heeft.
+In deze laatste fase zal het model opgeslagen worden en geïmplementeerd worden in de broncode van de reeds bestaande applicatie. Er zal ook grondig getest worden of het model hierin het beoogde resultaat heeft.
 
 \begin{figure}
 	\centering

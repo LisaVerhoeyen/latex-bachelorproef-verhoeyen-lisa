@@ -1,0 +1,23 @@
+%%=============================================================================
+%% Geteste modellen
+%%=============================================================================
+
+\chapter{Resultaten}%
+\label{ch:resultaten}
+
+\section{Geteste modellen}
+\label{sec:modellen}
+Na het opzoeken van bestaande opties werd gekozen om 3 verschillende modellen uit te testen. Het eerste model dat getest werd is Speaker-Diarization van \textcite{DongLu}. Dit is een model dat gebaseerd is op VGG-Speaker-recognition en UIS-RNN. Na wat onderzoek bleek dat de combinatie van beide frameworks en het trainen zelf nog van 0 zouden moeten gebeuren, wat veel tijd in beslag zou nemen, dus werd er gekozen om hier voor deze bachelorproef geen gebruik van te maken.
+Het tweede model dat getest werd, is Simple Diarizer van \textcite{Chau}. Dit leek op het eerste zicht een goed model, maar na tijdens het testen bleek dat dit model gebruik maakt van SpeechBrain. SpeechBrain is een "all-in-one speech toolkit" die ontwikkeld is om onderzoek naar en het ontwikkelen van neurale spraakverwerkingstechnologieën gemakkelijker te maken \autocite{speechbrain}. Het gebruik hiervan bracht echter het probleem met zich mee dat admin rechten nodig waren om er gebruik van te kunnen maken, dus werd er besloten om toch niet met dit model verder te gaan.
+Het laatste model dat getest werd was pyannote-audio van \textcite{Bredin2024}. Dit model werd getest op een vlaams audio fragment en gaf als resultaat een de start- en eindtijden voor elke spreker weer. Er is echter geen optie voorzien om dit om te zetten naar audio-fragmenten. Dit probleem was eenvoudig op te lossen door een externe python library te gebruiken, namelijk pydub. Na het beluisteren van de audiofragmenten bleek dat deze nog niet zeer accuraat waren en dat er dus nog training nodig was, maar het resultaat was al een zeer goed begin. aangezien pyannote-audio voorzien is om nog verder getraind te worden, werd er gekozen om met dit model verder te gaan. De resultaten hiervan worden in de volgende secties besproken.
+
+\section{Trainen van het gekozen model}
+\label{sec:trainen}
+
+
+\section{Finetunen van het model}
+\label{sec:finetunen}
+
+
+\section{Implementatie in de applicatie}
+\label{sec:implementatie}
