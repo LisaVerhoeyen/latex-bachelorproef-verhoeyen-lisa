@@ -17,38 +17,11 @@ Om een pyannote.audio model te trainen is een pyannote databank nodig. Hoe je de
 
 De basis van de databank is een YAML bestand waarin een databank en een protocol staan. De databank verwijst naar de plaats waar de audio bestanden opgeslagen staan in de vorm van wav bestanden. Het protocol bestaat uit 3 subsets, namelijk een train subset die gebruikt wordt om het model te trainen, een development subset die gebruikt wordt als validatie en een test subset die gebruikt wordt voor de evaluatie van het model. Elk van deze subsets verwijzen naar een .rttm, .uem en .lst bestand. Het .rttm bestand bevat de annotatie van de audiofragmenten die gebruikt worden in de subset, het .uem bestand bevat de informatie over welke delen van de audio bestanden geannoteerd zijn voor de subset en het .lst bestand bevat een lijst met de namen van bestanden die gebtuikt worden in de subset. De uiteindelijke setup van het YAML bestand is te zien in codefragment 4.1.
 
-\begin{minted}{yaml}
-	\caption{codefragment 4.1: Code voor het configuratie bestand van de pyannote databank}
-	Databases:
-		BP: 
-			- ../training_database/wavs/{uri}.wav
-	
-	Protocols:
-		BP:
-			SpeakerDiarization:
-				VlaamseAudio:
-					scope: file
-					train:
-						uri: ../training_database/lists/train.lst
-						annotation: ../training_database/rttms/train.rttm
-						annotated: ../training_database/uems/train.uem
-					development:
-						uri: ../training_database/lists/development.lst
-						annotation: ../training_database/rttms/development.rttm
-						annotated: ../training_database/uems/development.uem
-					test:
-						uri: ../training_database/lists/test.lst
-						annotation: ../training_database/rttms/test.rttm
-						annotated: ../training_database/uems/test.uem
-\end{minted}
+%TODO: codefragment toevoegen
 
 
-\section{Trainen van het gekozen model}
+\section{Trainen en finetunen van het gekozen model}
 \label{sec:trainen}
-
-
-\section{Finetunen van het model}
-\label{sec:finetunen}
 
 
 \section{Implementatie in de applicatie}
