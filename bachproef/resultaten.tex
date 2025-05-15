@@ -2,7 +2,7 @@
 %% Geteste modellen
 %%=============================================================================
 
-\chapter{Resultaten}%
+\chapter{Werkwijze en resultaten}%
 \label{ch:resultaten}
 
 \section{Geteste modellen}
@@ -11,20 +11,19 @@ Na het opzoeken van bestaande opties werd gekozen om 3 verschillende modellen ui
 
 Het tweede model dat getest werd, is Simple Diarizer van \textcite{Chau}. Dit leek op het eerste zicht een goed model, maar na tijdens het testen bleek dat dit model gebruik maakt van SpeechBrain. SpeechBrain is een "all-in-one speech toolkit" die ontwikkeld is om onderzoek naar en het ontwikkelen van neurale spraakverwerkingstechnologieën gemakkelijker te maken \autocite{speechbrain}. Het gebruik hiervan bracht echter het probleem met zich mee dat admin rechten nodig waren om er gebruik van te kunnen maken, dus werd er besloten om toch niet met dit model verder te gaan.
 
-Het laatste model dat getest werd was pyannote-audio van \textcite{Bredin2024}. Dit model werd getest op een vlaams audio fragment en gaf als resultaat een de start- en eindtijden voor elke spreker weer. Er is echter geen optie voorzien om dit om te zetten naar audio-fragmenten. Dit probleem was eenvoudig op te lossen door een externe python library te gebruiken, namelijk pydub. Na het beluisteren van de audiofragmenten bleek dat deze nog niet zeer accuraat waren en dat er dus nog training nodig was, maar het resultaat was al een zeer goed begin. aangezien pyannote-audio voorzien is om nog verder getraind te worden, werd er gekozen om met dit model verder te gaan. De resultaten hiervan worden in de volgende secties besproken.
+Het laatste model dat getest werd was pyannote-audio van \textcite{Bredin2024}. Dit model werd getest op een Vlaams audio fragment en gaf als resultaat een de start- en eindtijden voor elke spreker weer. Er is echter geen optie voorzien om dit om te zetten naar audio-fragmenten. Dit probleem was eenvoudig op te lossen door een externe python library te gebruiken, namelijk pydub. Na het beluisteren van de audiofragmenten bleek dat deze nog niet zeer accuraat waren en dat er dus nog training nodig was, maar het resultaat was al een zeer goed begin. aangezien pyannote-audio voorzien is om nog verder getraind te worden, werd er gekozen om met dit model verder te gaan. De resultaten hiervan worden in de volgende secties besproken.
 
 \section{Voorbereiden van de data}
 \label{sec:data}
-Om een pyannote.audio model te trainen is een pyannote databank nodig. Hoe je deze juist kan opstellen staat beschreven op \textcite{Bredindatabank} voor verschillende types modellen. Hier wordt specifiek gebruik gemaakt van de set-up voor een het trainen van een speaker diarization model.
+Om een pyannote.audio model te trainen is een pyannote databank nodig. Hoe je deze juist kan opstellen staat beschreven op \textcite{BredinDatabase} voor verschillende types modellen. Hier wordt specifiek gebruik gemaakt van de set-up voor een het trainen van een speaker diarization model.
 
 De basis van de databank is een YAML bestand waarin een databank en een protocol staan. De databank verwijst naar de plaats waar de audio bestanden opgeslagen staan in de vorm van wav bestanden. Het protocol bestaat uit 3 subsets, namelijk een train subset die gebruikt wordt om het model te trainen, een development subset die gebruikt wordt als validatie en een test subset die gebruikt wordt voor de evaluatie van het model. Elk van deze subsets verwijzen naar een .rttm, .uem en .lst bestand. Het .rttm bestand bevat de annotatie van de audiofragmenten die gebruikt worden in de subset, het .uem bestand bevat de informatie over welke delen van de audio bestanden geannoteerd zijn voor de subset en het .lst bestand bevat een lijst met de namen van bestanden die gebruikt worden in de subset. De uiteindelijke set-up van het YAML bestand is te zien in codefragment ~\ref{code:config-file}.
 
-%TODO: codefragment toevoegen
 \begin{listing}
 	\begin{minted}[tabsize=4]{yaml}
-databanks:
+Databases:
   BP: 
-    - ../training_databank/wavs/{uri}.wav
+    - ../training_database/wavs/{uri}.wav
 
 Protocols:
   BP:
@@ -32,17 +31,17 @@ Protocols:
       VlaamseAudio:
         scope: file
         train:
-          uri: ../training_databank/lists/train.lst
-          annotation: ../training_databank/rttms/train.rttm
-          annotated: ../training_databank/uems/train.uem
+          uri: ../training_database/lists/train.lst
+          annotation: ../training_database/rttms/train.rttm
+          annotated: ../training_database/uems/train.uem
         development:
-          uri: ../training_databank/lists/development.lst
-          annotation: ../training_databank/rttms/development.rttm
-          annotated: ../training_databank/uems/development.uem
+          uri: ../training_database/lists/development.lst
+          annotation: ../training_database/rttms/development.rttm
+          annotated: ../training_database/uems/development.uem
         test:
-          uri: ../training_databank/lists/test.lst
-          annotation: ../training_databank/rttms/test.rttm
-          annotated: ../training_databank/uems/test.uem
+          uri: ../training_database/lists/test.lst
+          annotation: ../training_database/rttms/test.rttm
+          annotated: ../training_database/uems/test.uem
 	\end{minted}
 	\caption[Configuratie databank]{\label{code:config-file}Inhoud van het configuratiebestand voor de databank}
 \end{listing}
@@ -227,17 +226,120 @@ finetuned_pipeline.instantiate({
 \subsection{Resultaten van het trainen}
 \label{subsec:train-res}
 
+De dataset voor het trainen was in het begin opgebouwd met duidelijke audio van televisie programma's. Het trainen op deze data gaf veelbelovende resultaten. De Diarization Error Rate (DER) voor deze data was voor het trainen gelijk aan 9.2\% en door het trainen met deze audio kon de DER verlaagd naar 7.4\%. Als extra test werd hierna de pipeline toegepast op een audio van een Vlaams televisieprogramma en een audio bestand dat opgenomen werd in het Zorglab. Hier bleek dat de stemmen in de audio van het televisieprogramma vrij accuraat gescheiden konden worden, maar dat dit helemaal niet het geval was voor de audio uit het Zorglab.
 
-
-Voor het trainen werd eerst de accuraatheid van het model getest aan de hand van pyannote.metrics. Dit controleert de accuraatheid van een model door de Diarization Error Rate (DER) te berekenen. De DER voor de eerste versie van de databank was 9.2\%.
-
-Hierna gebeurde het effectieve trainen en finetunen. Dit 
-
-De dataset voor het trainen was in het begin opgebouwd met duidelijke audio van televisie programma's. Het trainen op deze data gaf veelbelovende resultaten. De Diarization Error Rate (DER) voor deze data was voor het trainen gelijk aan 9.2\% en door het trainen met deze audio kon de DER verlaagd naar 7.4\%.
+Hierdoor werd besloten om de databank aan te passen. Er werd data uit het Zorglab toegevoegd aan alle sub-sets in de databank en het trainingsproces werd opnieuw uitgevoerd. Hierbij was de DER van de pipeline voor het trainen gelijk aan 20.9\%, wat significant hoger is dan bij de data uit de eerste versie van de databank. Na het trainen van het model op de nieuwe data was de DER hoger in plaats van lager, namelijk 56.4\%, wat een onverwachte uitkomst was. In en poging om dit resultaat te verbeteren, werd er extra data toegevoegd aan de sub-set voor het trainen en geëxperimenteerd met het aantal epochs in max\_epoch van het trainen. Het beste resultaat dat hierdoor bekomen werd was een DER van 50.6\% bij een waarde van 50 voor max\_epochs.
 
 \section{Gebruik maken van het getrainde model}
 \label{sec:gebruik}
+Om de getrainde pipeline te gebruiken in een andere file, moet deze opnieuw opgebouwd worden met de het getrainde model en de parameters die opgeslagen werden na de finetuning. Dit gebeurt in 2 stappen, aangezien de drempelwaardes die gevonden worden tijdens het finetunen geen parameters zijn in de oorspronkelijke pipeline. De eerste stap haalt de opgeslagen pipeline op en wordt geïnstantieerd met alle opgeslagen parameters behalve de drempelwaarden. Dit wordt getoond in codefragment \ref{code:eerste-stap}.
+
+De tweede stap creëert een pipeline met de modellen uit de opgehaalde pipeline en wordt geïnstantieerd met alle opgeslagen parameters, inclusief de drempelwaarden. Dit wordt getoond in codefragment \ref{code:tweede-stap}.
+
+\begin{listing}
+	\begin{minted}{python}
+trained_pipeline = Pipeline.from_pretrained(Path("./pipeline/config.yaml"))
+model = Model.from_pretrained("./models/trained_model.ckpt")
+trained_pipeline.segmentation_model = model
+
+with open("./parameters/config.yaml", "r") as f:
+  parameters = yaml.safe_load(f)
+
+params = parameters["params"]
+
+params_clust = params["clustering"]
+
+trained_pipeline.instantiate({
+  "segmentation": {"min_duration_off": params["segmentation"]["min_duration_off"]},
+  "clustering": params["clustering"]
+})
+	\end{minted}
+	\caption[Ophalen en instantiëren opgeslagen pipeline]{\label{code:eerste-stap}Ophalen van de opgeslagen pipeline en het instantiëren zonder de drempelwaarden}
+\end{listing}
+
+\begin{listing}
+	\begin{minted}{python}
+pipeline = SpeakerDiarization(
+  segmentation=model,
+  embedding=trained_pipeline.embedding,
+  embedding_exclude_overlap=trained_pipeline.embedding_exclude_overlap,
+  clustering=trained_pipeline.klustering,
+)
+
+with open("./parameters/config.yaml", "r") as f:
+  loaded_parameters = yaml.safe_load(f)
+
+loaded_params = loaded_parameters["params"]
+
+params_clust = loaded_params["clustering"]
+
+parameters_segm = parameters["params"]["segmentation"]
+
+
+pipeline.instantiate({
+  "segmentation": {
+    "min_duration_off": parameters_segm["min_duration_off"],
+    "threshold": parameters_segm["threshold"]
+  },
+  "clustering": params_clust
+})
+	\end{minted}
+	\caption[Recreëren van de getrainde pipeline met alle parameters]{\label{code:tweede-stap}Recreëren en instantiëren van de pipeline na trainen en finetunen met alle parameters}
+\end{listing}
+
+Na deze stappen is de pipeline klaar voor gebruik. Om een audio bestand te splitsen, wordt het pad naar het bestand meegegeven als argument aan de pipeline. Hierna wordt een RTTM bestand gecreëerd aan de hand van de code uit codefragment \ref{code:maak-rttm}. Dit bestand wordt dan gebruikt om aparte audio bestanden te maken per instantie van een spreker in codefragment \ref{code:korte-bestanden}. Uiteindelijk worden deze audio fragmenten gecombineerd om audio bestanden te maken per spreker, zoals getoond in codefragment \ref{code:audio-per-spreker}.
+
+\begin{listing}
+	\begin{minted}{python}
+file_name = re.search(r'.*\/(.+?)\.wav', path).group(1)
+
+# delete file if it already exists so a new file can get created
+if os.path.exists(f"./results/rttm/{file_name}.rttm"):
+  os.remove(f"./results/rttm/{file_name}.rttm")
+
+f = open(f"./results/rttm/{file_name}.rttm", "w")
+for turn, _, speaker in diarization.itertracks(yield_label=True):
+  f.write(f"SPEAKER {file_name} 1 {round(turn.start, 3)} {round(turn.end-turn.start, 3)} <NA> <NA> {speaker} <NA> <NA>\n")
+
+f.close()
+	\end{minted}
+	\caption[Code om RTTM bestand te creëren]{\label{code:maak-rttm}Code die een RTTM bestand creëert uit het resultaat van de pipeline}
+\end{listing}
+
+\begin{listing}
+	\begin{minted}{python}
+audio = AudioSegment.from_wav(path)
+
+os.mkdir(f"./results/audio/{file_name}/")
+
+
+for turn, _, speaker in diarization.itertracks(yield_label=True):
+  if not os.path.isdir(f"./results/audio/{file_name}/{speaker}"):
+    os.mkdir(f"./results/audio/{file_name}/{speaker}")
+
+  segment = audio[turn.start * 1000:turn.end * 1000]  # Convert seconds to milliseconds
+  segment.export(f"./results/audio/{file_name}/{speaker}/speaker_{speaker}_{turn.start:.1f}-{turn.end:.1f}.wav", format="wav")
+	\end{minted}
+	\caption[Code om korte audio bestanden te creëren]{\label{code:korte-bestanden}Code die afzonderlijke audio fragmenten creëert gebaseerd op een RTTM bestand}
+\end{listing}
+
+\begin{listing}
+	\begin{minted}{python}
+speakers = os.listdir(f"./results/audio/{file_name}")
+
+for speaker in speakers:
+  files_list = os.listdir(f"./results/audio/{file_name}/{speaker}")
+  files_list = natsorted(files_list)
+
+  combined = AudioSegment.from_file(f"./results/audio/{file_name}/{speaker}/{files_list[0]}")
+  for i in range(1,len(files_list)):
+    combined = combined.append(AudioSegment.from_file(f"./results/audio/{file_name}/{speaker}/{files_list[i]}"), crossfade=0.0)
+
+  combined.export(f"./results/audio/{file_name}_{speaker}.wav", format="wav")
+	\end{minted}
+	\caption[Code om audio bestanden per spreker te creëren]{\label{code:audio-per-spreker}Code die de afzonderlijke audio fragmenten combineert tot audio bestanden per spreker}
+\end{listing}
 
 \section{Implementatie in de applicatie}
 \label{sec:implementatie}
-Aangezien de resultaten van de pipeline na het trainen niet goed genoeg waren en er nog niet kon geëxperimenteerd worden met het toepassen van een ruisfilter voor en/of na het trainen, is er nog geen implementatie gebeurd van het model.
+Aangezien de resultaten van de pipeline na het trainen niet goed genoeg waren, is er nog geen implementatie gebeurd van het model.
