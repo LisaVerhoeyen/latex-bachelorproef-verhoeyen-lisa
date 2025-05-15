@@ -4,3 +4,20 @@
 
 \chapter{Bespreking en verder onderzoek}
 \label{ch:bespreking}
+In dit hoofdstuk worden de resultaten van het onderzoek verder besproken en worden ook mogelijke oplossingen naar voor gebracht die in volgende onderzoeken overwogen kunnen worden.
+
+\section{Bespreking resultaten}
+\label{sec:bespr-res}
+Zoals vermeld werd in hoofdstuk \ref{ch:resultaten}, waren de resultaten voor de audio van Vlaamse televisieprogramma's significant beter dan die voor audio die opgenomen werd in het Zorglab. Een mogelijke verklaring hiervoor kan zijn dat de audio van de televisieprogramma's duidelijker is en minder ruis bevat, waardoor het model het gemakkelijker heeft om een onderscheid te maken tussen de verschillende stemmen. In de eerste versie van de databank werd onder andere gebruik gemaakt van bepaalde audio bestanden die achtergrond geluid bevatten zoals fragmenten waarin muziek afgespeeld werd of die applaus van publiek bevatten. Dit werd gedaan om mogelijks de effecten van ruis na te bootsen, zodat het model ook zou kunnen werken op audio die ruis bevat. Dit bleek echter niet voldoende te zijn, waardoor de keuze gemaakt werd om audio van het Zorglab toe te voegen.
+
+Aangezien het trainen op een databank met zowel audio van de televisieprogramma's als die van het Zorglab zorgde voor een toename in de DER, was dit blijkbaar ook niet de juiste keuze. Mogelijks heeft het gebruik van audio die ruis bevat dus een nadelig effect op het trainingsproces. 
+
+\section{Mogelijke oplossingen}
+\label{sec:opl}
+Gezien de resultaten die in dit onderzoek verkregen zijn, lijken er drie grote mogelijkheden te zijn voor verder onderzoek. Een eerste mogelijkheid is de databank behouden zoals ze nu is, met uitzondering van het gebruiken van een ruisfilter op de data van het Zorglab om zo hopelijk ervoor te zorgen dat het trainen voor een accurater resultaat zorgt. Al dan niet is het ook mogelijk dat dit gecombineerd zal moeten worden met het gebruiken van een ruisfilter voor de audio die door de pipeline gescheiden moet worden. Aangezien er al een ruisfilter aanwezig is in de bestaande applicatie, lijkt het een goede optie om van daaruit te vertrekken.
+
+Een tweede mogelijkheid voor verder onderzoek is het toevoegen van een grote hoeveelheid extra data. Deze data zou zowel duidelijke als onduidelijke audio bevatten. De databank in dit onderzoek is relatief beperkt omdat creëren van de RTTM bestanden een zeer tijdrovende taak is, dus een significant grotere databank zou voor een beter resultaat kunnen zorgen.
+
+De derde mogelijkheid is het opsplitsen van de databank en het trainen van het segmentatie model op beide databanken. De eerste databank zou dan bestaan uit enkel duidelijke audio van bijvoorbeeld televisieprogramma's, terwijl de tweede databank puur zou bestaan uit data die opgenomen werd in het Zorglab.
+
+Afhankelijk van de effecten van deze drie opties, lijkt het ook mogelijk dat er een combinatie van deze aanpakken nodig is.
