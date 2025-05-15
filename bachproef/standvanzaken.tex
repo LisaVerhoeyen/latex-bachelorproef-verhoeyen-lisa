@@ -39,12 +39,24 @@ In \textcite{Khoma2023} wordt ook gesproken over twee categorieën van diarizati
 
 Speaker diarization is een techniek die gebruikt kan worden voor verschillende doeleinden, zoals o.a. spreker indexering, herkennen van een spreker en hulp bij speech-to-text transcriptie \autocite{AngueraMiro2012}. Dit maakt het een zeer interessante techniek om te gebruiken voor deze bachelorproef. De hieronder besproken modellen zijn dus ook speaker diarization modellen.
 
+Ongeacht hoe de diarization aangepakt wordt, zijn er ook manieren om de accuraatheid van deze aanpak te meten.  \textcite{Park2021} Spreekt over drie "evaluation metrics", namelijk:
+\begin{itemize}
+	\item Diarization Error Rate (DER)
+	\item Jaccard Error Rate (JER)
+	\item World-level DER
+\end{itemize}
+DER is de populairste methode om de accuraatheid van een model te bepalen. De accuraatheid wordt berekend door de som te nemen van de gemiste spraakdetectie, het labelen van de verkeerde spreker en het vals alarm voor spraak en dit wordt gedeeld door de totale tijd. DER is een inschatting voor het geheel. \autocite{Park2021}
+
+JER heeft als doel om elke spreker hetzelfde gewicht te geven in de evaluatie door rekening te houden met de tijd die een spreker aan bod komt en het aantal sprekers in het audio fragment\autocite{Park2021}.
+
+World-level DER wordt voornamelijk gebruikt om de fouten te meten die aan de output transcriptie kant veroorzaakt worden. Het bekijkt de afwijking tussen de DER en de accuraatheid van de uiteindelijke transcriptie, aangezien de duur van het spreken niet altijd in lijn ligt met de grenzen van woorden. \autocite{Park2021}
+
+
 \section{Reeds bestaande modellen}
 Wanneer het aankomt op reeds bestaande modellen, moet er gezocht worden naar twee zaken. De eerste is meer voor de hand liggend, namelijk modellen die instaan voor de speaker diarization. De tweede is echter ook belangrijk, namelijk modellen die instaan om de uitkomst van de eerste modellen te evalueren. Deze zijn belangrijk om te weten of het scheiden van de stemmen succesvol gebeurd is en te bepalen hoe goed het model is.
 
 \subsection{Diarization modellen}
-%TODO: aanvullen met modellen
-Voor deze bachelorproef worden verschillende modellen overwogen om er zo een gegronde keuze te kunnen maken welk model geïmplementeerd kan worden in de applicatie. Het eerste model is pyannote.audio \footnote{Code pyannote.audio: \url{https://github.com/pyannote/pyannote-audio}}. Pyannote.audio is een open-source toolkit in Python die gebruikt wordt voor speaker diarization \autocite{Bredin2023}. De aanpak die voorgesteld wordt in \textcite{Bredin2023} is opgebouwd uit drie fasen:
+Voor deze bachelorproef worden verschillende modellen overwogen om er zo een gegronde keuze te kunnen maken welk model geïmplementeerd kan worden in de applicatie. Het eerste model is pyannote.audio \footnote{Code pyannote.audio: \url{https://github.com/pyannote/pyannote-audio}}. Pyannote.audio is een open-source toolkit in Python die gebruikt wordt voor speaker diarization \autocite{Bredin2023}. De aanpak die voorgesteld wordt in \textcite{Bredin2023} is een pipeline opgebouwd uit drie fasen:
 \begin{itemize}
 	\item segmentatie van de sprekers toegepast op een (lokaal) verschuivend venster
 	\item neural speaker embedding van elke (lokale) spreker
@@ -68,11 +80,7 @@ UIS-RNN \footnote{Code UIS-RNN: \url{https://github.com/google/uis-rnn}} wordt b
 	\item De toestanden van verschillende RNN instanties, die overeenkomen met verschillende sprekers, worden in het tijdsdomein met elkaar verbonden.
 \end{itemize}
 
-%TODO: uitpluizen of diart relevant is voor BP (online diarization)
-\begin{comment}
-Een tweede model dat gebruikt wordt is diart \footnote{Code diart: \url{https://github.com/juanmc2005/diart}}. Dit model is de officiële implementatie van de resultaten van \textcite{Coria2021} en bestaat uit twee fases. De eerste fase past een end-to-end aanpak toe waarbij audio segmenten gebruikt worden die klein genoeg zijn om een aanvaardbare inschatting te maken van de maximale hoeveelheid sprekers die aanwezig zijn \autocite{Coria2021}. In de tweede fase wordt globale clustering toegepast op het resultaat van de eerste fase \autocite{Coria2021}.
-\end{comment}
-
+Een derde model dat in overweging genomen wordt is Simple Diarizer \footnote{Code Simple Diarizer: \url{https://github.com/cvqluu/simple_diarizer/tree/main}}. Dit is een pipeline die opgebouwd is uit verschillende voorgetrainde modellen en ontwikkeld is met het oog op zo eenvoudig mogelijk van een audio input naar gediarizeerde segmenten te gaan \autocite{Chau}
 
 \subsection{Evaluatie van modellen voor diarization}
-Een eerste model dat gebruikt zal worden om de accuraatheid van de bovenstaande modellen te bepalen is pyannote.metrics \footnote{Code pyannote.metrics: \url{https://github.com/pyannote/pyannote-metrics}} en is samen ontwikkeld met de eerste versie van het model van \textcite{Bredin2023} dat hierboven beschreven werd. Pyannote.metrics is een open-source Python library voor reproduceerbare evaluatie, diagnostiek en foutenanalyse van speaker diarization systemen \autocite{Bredin2017}.
+Een model dat gebruikt zal worden om de accuraatheid van de bovenstaande modellen te bepalen is pyannote.metrics \footnote{Code pyannote.metrics: \url{https://github.com/pyannote/pyannote-metrics}} en is samen ontwikkeld met de eerste versie van het model van \textcite{Bredin2023} dat hierboven beschreven werd. Pyannote.metrics is een open-source Python library voor reproduceerbare evaluatie, diagnostiek en foutenanalyse van speaker diarization systemen en berekent de DER \autocite{Bredin2017}. Tests zullen moeten uitwijzen of dit framework ook gebruikt kan worden voor andere modellen dan pyannote-audio.

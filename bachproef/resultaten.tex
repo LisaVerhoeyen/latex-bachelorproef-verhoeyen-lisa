@@ -8,21 +8,236 @@
 \section{Geteste modellen}
 \label{sec:modellen}
 Na het opzoeken van bestaande opties werd gekozen om 3 verschillende modellen uit te testen. Het eerste model dat getest werd is Speaker-Diarization van \textcite{DongLu}. Dit is een model dat gebaseerd is op VGG-Speaker-recognition en UIS-RNN. Na wat onderzoek bleek dat de combinatie van beide frameworks en het trainen zelf nog van nul zouden moeten gebeuren, wat veel tijd in beslag zou nemen, dus werd er gekozen om hier voor deze bachelorproef geen gebruik van te maken.
+
 Het tweede model dat getest werd, is Simple Diarizer van \textcite{Chau}. Dit leek op het eerste zicht een goed model, maar na tijdens het testen bleek dat dit model gebruik maakt van SpeechBrain. SpeechBrain is een "all-in-one speech toolkit" die ontwikkeld is om onderzoek naar en het ontwikkelen van neurale spraakverwerkingstechnologieën gemakkelijker te maken \autocite{speechbrain}. Het gebruik hiervan bracht echter het probleem met zich mee dat admin rechten nodig waren om er gebruik van te kunnen maken, dus werd er besloten om toch niet met dit model verder te gaan.
+
 Het laatste model dat getest werd was pyannote-audio van \textcite{Bredin2024}. Dit model werd getest op een vlaams audio fragment en gaf als resultaat een de start- en eindtijden voor elke spreker weer. Er is echter geen optie voorzien om dit om te zetten naar audio-fragmenten. Dit probleem was eenvoudig op te lossen door een externe python library te gebruiken, namelijk pydub. Na het beluisteren van de audiofragmenten bleek dat deze nog niet zeer accuraat waren en dat er dus nog training nodig was, maar het resultaat was al een zeer goed begin. aangezien pyannote-audio voorzien is om nog verder getraind te worden, werd er gekozen om met dit model verder te gaan. De resultaten hiervan worden in de volgende secties besproken.
 
 \section{Voorbereiden van de data}
 \label{sec:data}
-Om een pyannote.audio model te trainen is een pyannote databank nodig. Hoe je deze juist kan opstellen staat beschreven op \textcite{BredinDatabase} voor verschillende types modellen. Hier wordt specifiek gebruik gemaakt van de set-up voor een het trainen van een speaker diarization model.
+Om een pyannote.audio model te trainen is een pyannote databank nodig. Hoe je deze juist kan opstellen staat beschreven op \textcite{Bredindatabank} voor verschillende types modellen. Hier wordt specifiek gebruik gemaakt van de set-up voor een het trainen van een speaker diarization model.
 
-De basis van de databank is een YAML bestand waarin een databank en een protocol staan. De databank verwijst naar de plaats waar de audio bestanden opgeslagen staan in de vorm van wav bestanden. Het protocol bestaat uit 3 subsets, namelijk een train subset die gebruikt wordt om het model te trainen, een development subset die gebruikt wordt als validatie en een test subset die gebruikt wordt voor de evaluatie van het model. Elk van deze subsets verwijzen naar een .rttm, .uem en .lst bestand. Het .rttm bestand bevat de annotatie van de audiofragmenten die gebruikt worden in de subset, het .uem bestand bevat de informatie over welke delen van de audio bestanden geannoteerd zijn voor de subset en het .lst bestand bevat een lijst met de namen van bestanden die gebtuikt worden in de subset. De uiteindelijke setup van het YAML bestand is te zien in codefragment 4.1.
+De basis van de databank is een YAML bestand waarin een databank en een protocol staan. De databank verwijst naar de plaats waar de audio bestanden opgeslagen staan in de vorm van wav bestanden. Het protocol bestaat uit 3 subsets, namelijk een train subset die gebruikt wordt om het model te trainen, een development subset die gebruikt wordt als validatie en een test subset die gebruikt wordt voor de evaluatie van het model. Elk van deze subsets verwijzen naar een .rttm, .uem en .lst bestand. Het .rttm bestand bevat de annotatie van de audiofragmenten die gebruikt worden in de subset, het .uem bestand bevat de informatie over welke delen van de audio bestanden geannoteerd zijn voor de subset en het .lst bestand bevat een lijst met de namen van bestanden die gebruikt worden in de subset. De uiteindelijke set-up van het YAML bestand is te zien in codefragment ~\ref{code:config-file}.
 
 %TODO: codefragment toevoegen
+\begin{listing}
+	\begin{minted}[tabsize=4]{yaml}
+databanks:
+  BP: 
+    - ../training_databank/wavs/{uri}.wav
 
+Protocols:
+  BP:
+    SpeakerDiarization:
+      VlaamseAudio:
+        scope: file
+        train:
+          uri: ../training_databank/lists/train.lst
+          annotation: ../training_databank/rttms/train.rttm
+          annotated: ../training_databank/uems/train.uem
+        development:
+          uri: ../training_databank/lists/development.lst
+          annotation: ../training_databank/rttms/development.rttm
+          annotated: ../training_databank/uems/development.uem
+        test:
+          uri: ../training_databank/lists/test.lst
+          annotation: ../training_databank/rttms/test.rttm
+          annotated: ../training_databank/uems/test.uem
+	\end{minted}
+	\caption[Configuratie databank]{\label{code:config-file}Inhoud van het configuratiebestand voor de databank}
+\end{listing}
+
+Tijdens het verloop van het trainen waren er twee versies van de databank. De eerste versie bestond enkel uit audio van televisieprogramma's. In de tweede versie werd er data toegevoegd die gedurende voorgaande jaren opgenomen werd in het Zorglab.
 
 \section{Trainen en finetunen van het gekozen model}
 \label{sec:trainen}
 
+\subsection{Trainingsproces}
+\label{subsec:proces}
+Het proces om het model te trainen en finetunen werd gebaseerd op een voorbeeld notebook \footnote{Voorbeeld notebook voor het trainingsproces: \url{https://github.com/pyannote/pyannote-audio/blob/main/tutorials/adapting_pretrained_pipeline.ipynb}} die te vinden is op de GitHub pagina van het model \autocite{Bredin2024}. Voor het trainen werd gebruik gemaakt WSL (Windows Subsystem for Linux) omdat dit niet mogelijk is in Windows.
+
+De eerste stap in het trainingsproces is het inladen van de databank in de notebook. Hierna wordt de pyannote-audio pipeline voor speaker diarization opgehaald. Hiervoor zijn 2 methoden:
+\begin{itemize}
+	\item De pipeline die op Hugging Face staat ophalen \footnote{Pyannote speaker diarization pipeline op Hugging Face: \url{https://huggingface.co/pyannote/speaker-diarization-3.1}}
+	\item Gebruik maken van de offline pipeline
+\end{itemize}
+Hier werd gekozen voor het gebruik maken van de offline pipeline aangezien deze na het trainen opgeslagen moest kunnen worden voor implementatie in de applicatie, wat niet mogelijk moeilijker was met de online pipeline.
+
+Na het opzetten van de databank en het ophalen van de pipeline wordt de accuraatheid van de pipeline berekend door gebruik te maken van pyannote-metrics. Hiervoor creëert de pipeline eerst een RTTM bestand van de audio bestanden in de test subset van de databank. Hierna wordt dit vergeleken met de RTTM bestanden in de test subset en op basis daarvan wordt de DER berekend. De code die hiervoor gebruikt wordt, is te zien in codefragment \ref{code:pyannote-metrics}.
+
+\begin{listing}
+	\begin{minted}{python}
+from pyannote.metrics.diarization import DiarizationErrorRate
+
+metric = DiarizationErrorRate()
+
+for file in protocol.test():
+  print(file)
+  file["pretrained pipeline"] = pretrained_pipeline(file)
+  metric(file["annotation"], file["pretrained pipeline"], uem=file["annotated"])
+
+print(f"Diarization error rate is {100 * abs(metric):.1f}% for the pretrained model")
+	\end{minted}
+	\caption[Berekening DER met pyannote-metrics]{\label{code:pyannote-metrics}Berekening van de accuraatheid van de speaker diarization pipeline}
+\end{listing}
+
+Voor aan het trainen begonnen kan worden, moet segmentatie model uit de pipeline gehaald worden, aangezien de training hierop zal gebeuren. Aan dit model wordt eerst een taak aan toegewezen, waarna de data preparatie en set-up gebeuren zoals getoond in codefragment \ref{code:setup-training}.
+
+\begin{listing}
+	\begin{minted}{python}
+pretrained_segm_model = Model.from_pretrained("./pipeline/segmentation/pytorch_model.bin")
+output_dir = "./models"
+
+task = pyannote.audio.tasks.SpeakerDiarization(
+  protocol,
+  max_num_speakers=5,
+  batch_size=32,
+  vad_loss="bce"
+)
+
+pretrained_segm_model.task = task
+pretrained_segm_model.prepare_data()
+pretrained_segm_model.set-up()
+	\end{minted}
+	\caption[Model klaarmaken voor training]{\label{code:setup-training}Code die gebruikt wordt om het model klaar te maken voor training.}
+\end{listing}
+
+Voor het trainen zelf gebeurt door gebruik te maken van PyTorch Lightning \footnote{Documentatie voor PyTorch Lightning; \url{https://lightning.ai/docs/pytorch/stable/}}. Hiervoor wordt gebruik gemaakt van een Adam optimizer en een checkpoint voor EarlyStopping. De set-up hiervoor wordt getoond in codefragment \ref{code:pl-setup}.
+
+\begin{listing}
+	\begin{minted}{python}
+def configure_optimizers(self):
+  return Adam(self.parameters(), lr=1e-4)
+  
+pretrained_segm_model.configure_optimizers = MethodType(configure_optimizers, pretrained_segm_model)
+
+monitor, direction = task.val_monitor
+checkpoint = ModelCheckpoint(
+  monitor,
+  mode=direction,
+  save_top_k=1,
+  every_n_epochs=1,
+  save_last=False,
+  save_weights_only=False,
+  filename="{epoch}",
+  verbose=False
+)
+
+early_stopping = EarlyStopping(
+  monitor=monitor,
+  mode=direction,
+  min_delta=0.0,
+  patience=10,
+  strict=True,
+  verbose=False
+)
+
+callbacks = [RichProgressBar(), checkpoint, early_stopping]
+
+trainer = pl.Trainer(
+  callbacks=callbacks,
+  max_epochs=20,
+  gradient_clip_val=0.5,
+  log_every_n_steps=5
+)
+	\end{minted}
+	\caption[PyTorch Lightning set-up]{\label{code:pl-setup}Opzetten van de PyTorch Lightning trainer}
+\end{listing}
+
+Na deze stappen kan de effectieve training gebeuren en wordt het beste model uit de checkpoints opgeslagen.
+
+Na het trainen wordt de pipeline stap voor stap opnieuw opgebouwd en gefinetuned. Tijdens de eerste stap wordt een pipeline gecreëerd met enkel het getrainde segmentatie model en OracleClustering als clustering methode. Als parameters wordt enkel gebruik gemaakt van "min\_duration\_off" op 0.0 seconden voor het segmentatie model, wat ervoor zorgt dat gebieden zonder spraak die korter zijn dan 0.0 seconden opgevuld worden. Hierna wordt een optimizer opgezet voor de nieuwe pipeline met de development subset van de databank als referentie. Deze optimizer wordt gebruikt om de best mogelijke segmentatie drempel te vinden. De code hiervoor kan teruggevonden worden in codefragment \ref{code:eerste-finetuning}.
+
+\begin{listing}
+	\begin{minted}{python}
+pipeline = SpeakerDiarization(
+  segmentation=trained_model,
+  clustering="OracleClustering"
+)
+
+pipeline.freeze({"segmentation": {"min_duration_off": 0.0}})
+
+optimizer = Optimizer(pipeline)
+dev_set = list(protocol.development())
+
+iterations = optimizer.tune_iter(dev_set, show_progress=False)
+best_loss = 1.0
+for i, iteration in enumerate(iterations):
+  print(f"Best segmentation threshold so far: {iteration['params']['segmentation']['threshold']}")
+  if i > 50: break
+  
+best_segm_threshold = optimizer.best_params["segmentation"]["threshold"]
+	\end{minted}
+	\caption[Set-up voor eerste finetuning]{\label{code:eerste-finetuning}Eerste stap in het finetuning proces}
+\end{listing}
+
+Voor de tweede stap wordt de pipeline opgebouwd uit het getrainde segmentatie model, het embedding model, de embedding\_exclude\_overlap en de clustering uit de originele pipeline. Deze keer worden er parameters toegevoegd voor zowel de segmentatie, inclusief de beste waarde voor de drempel, als de clustering, waarna opnieuw een optimizer opgezet wordt aan de hand van de development subset uit de databank. Deze keer wordt de optimizer gebruikt voor het bepalen van een drempel voor de clustering. De code hiervoor kan gevonden worden in codefragment \ref{code:tweede-finetuning}.
+
+\begin{listing}
+	\begin{minted}{python}
+pipeline = SpeakerDiarization(
+  segmentation=trained_model,
+  embedding=pretrained_pipeline.embedding,
+  embedding_exclude_overlap=pretrained_pipeline.embedding_exclude_overlap,
+  clustering=pretrained_pipeline.klustering,
+)
+
+pipeline.freeze({
+  "segmentation": {
+    "threshold": best_segm_threshold,
+    "min_duration_off": 0.0
+  },
+  "clustering": {
+    "method": "centroid",
+    "min_cluster_size": 15
+  }
+})
+
+optimizer = Optimizer(pipeline)
+iterations = optimizer.tune_iter(dev_set, show_progress=False)
+best_loss = 1.0
+for i, iteration in enumerate(iterations):
+  print(f"Best clustering threshold so far: {iteration['params']['clustering']['threshold']}")
+  if i > 50: break
+  
+best_clust_threshold = optimizer.best_params["clustering"]["threshold"]
+	\end{minted}
+	\caption[Set-up voor tweede finetuning]{\label{code:tweede-finetuning}Tweede stap in het finetuning proces}
+\end{listing}
+
+Na de tweede finetuning stap wordt de pipeline opnieuw opgesteld zoals in de tweede stap van de finetuning. Deze pipeline wordt geïnstantieerd met dezelfde parameters als in de tweede stap en de beste drempel voor de clustering, zoals getoond wordt in codefragment \ref{code:finale-parameters}. Deze pipeline wordt dan getest met pyannote-metrics om te controleren of de DER lager ligt dan in het oorspronkelijke model, analoog aan codefragment \ref{code:pyannote-metrics}. Hierna worden de parameters opgeslagen in een YAML bestand zodat de getrainde pipeline later opnieuw kan gebruikt worden zoals besproken wordt in hoofdstuk \ref{sec:gebruik}.
+
+\begin{listing}
+	\begin{minted}{python}
+finetuned_pipeline.instantiate({
+  "segmentation": {
+    "threshold": best_segm_threshold,
+    "min_duration_off": 0.0
+  },
+  "clustering": {
+    "method": "centroid",
+    "min_cluster_size": 15,
+    "threshold": best_clust_threshold
+  }
+})
+	\end{minted}
+	\caption[Finale parameters]{\label{code:finale-parameters}Finale parameters waarmee de pipeline geïnstantieerd wordt na het trainen en finetunen.}
+\end{listing}
+
+\subsection{Resultaten van het trainen}
+\label{subsec:train-res}
+
+
+
+Voor het trainen werd eerst de accuraatheid van het model getest aan de hand van pyannote.metrics. Dit controleert de accuraatheid van een model door de Diarization Error Rate (DER) te berekenen. De DER voor de eerste versie van de databank was 9.2\%.
+
+Hierna gebeurde het effectieve trainen en finetunen. Dit 
+
+De dataset voor het trainen was in het begin opgebouwd met duidelijke audio van televisie programma's. Het trainen op deze data gaf veelbelovende resultaten. De Diarization Error Rate (DER) voor deze data was voor het trainen gelijk aan 9.2\% en door het trainen met deze audio kon de DER verlaagd naar 7.4\%.
+
+\section{Gebruik maken van het getrainde model}
+\label{sec:gebruik}
 
 \section{Implementatie in de applicatie}
 \label{sec:implementatie}
+Aangezien de resultaten van de pipeline na het trainen niet goed genoeg waren en er nog niet kon geëxperimenteerd worden met het toepassen van een ruisfilter voor en/of na het trainen, is er nog geen implementatie gebeurd van het model.
