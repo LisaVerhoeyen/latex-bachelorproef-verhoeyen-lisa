@@ -14,5 +14,14 @@
 % Heeft het onderzoek geleid tot nieuwe vragen die uitnodigen tot verder 
 %onderzoek?
 
-\lipsum[76-80]
+Het doel van deze bachelorproef was om een model te trainen dat stemmen kan onderscheiden in Vlaamse audio zodat dit geïmplementeerd en gebruikt kan worden in een applicatie voor elderspeak detectie in de opleiding verpleegkunde aan HOGENT. De reden hiervoor was dat er vraag was naar een mogelijkheid om de elderspeak detectie enkel uit te voeren op de stem van de student en niet op die van de patiënt. Dit werd onderzocht aan de hand van vier onderzoeksvragen.
 
+Voor de eerste onderzoeksvraag werd gezocht naar reeds bestaande modellen waarvan gebruik kan gemaakt worden om stemmen te onderscheiden en die verder getraind kunnen worden op Vlaamse audio. Als antwoord op deze onderzoeksvraag werden enkele modellen gevonden en werd besloten dat pyannote-audio de beste optie was om mee verder te gaan.
+
+De tweede onderzoeksvraag ging over het al dan niet kunnen verder trainen van reeds bestaande modellen. Hier werd ondervonden dat het wel degelijk mogelijk is om pyannote-audio verder te trainen aan de hand van Vlaamse audio.
+
+Wanneer het komt op de beste parameters om dit model te trainen, werd er voornamelijk gebaseerd op een voorbeeld notebook die kan gevonden worden op de GitHub pagina van het model. Hierbij werden ook een aantal parameters gezocht door een optimizer. De enige parameter waar tijdens het onderzoek zelf naar een eventueel betere waarde gezocht werd, is het maximum aantal epochs voor het trainen van het model. Zo werden dus de meest ideale parameters gevonden.
+
+De laatste vraag had als doel een manier te vinden om het model te implementeren in de applicatie. Hierop is echter geen antwoord in deze bachelorproef. Aangezien het trainen uiteindelijk niet het gewenste resultaat had, werd nog niet gezocht naar een manier om de pipeline getrainde te implementeren, maar eerder gebrainstormd over wat volgende stappen zouden kunnen zijn om te leiden tot een betere DER na het trainen.
+
+Als conclusie van deze bachelorproef kan dus gesteld worden dat, hoewel er modellen gevonden werden die verder getraind kunnen worden, het doel van het onderzoek niet behaald werd. Er werden echter wel manieren bedacht hoe verder onderzoek kan leiden tot een beter resultaat dat wel in de applicatie voor elderspeak detectie kan geïmplementeerd worden. Deze opties voor verder onderzoek bestaan uit het toepassen van een ruisfilter op de audio bestanden, het trainen op significant meer data en het trainen op twee verschillende databanken.
