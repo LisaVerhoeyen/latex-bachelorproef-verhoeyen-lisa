@@ -25,34 +25,35 @@ Het onderzoek van \textcite{Schryver2024} had als doel om spraak naar tekst om t
 
 \section{Onderzoek naar het onderscheiden van stemmen}
 %TODO: nog meer info nodig!
-Wanneer gezocht wordt naar manieren om stemmen te onderscheiden, is "speaker diarization" een term die vaak vernoemd wordt. Speaker diarization wordt beschreven als het bepalen wie wanneer spreekt in een audio of video opname waarvaan niet geweten is hoe vaak gesproken wordt en hoeveel sprekers aanwezig zijn \autocite{AngueraMiro2012}. Het feit dat er onbekende factoren in de fragmenten aanwezig zijn zorgt ervoor dat unsupervised identificatie van elke spreker in een audio fragment vereist is en de intervallen waarin deze spreker actief is \autocite{AngueraMiro2012}. Volgens \textcite{AngueraMiro2012} kunnen de speaker diarization technieken op gedeeld worden in twee categorieën, namelijk bottom-up en top-down modellen. Bottom-up modellen worden geïnitialiseerd met een grote hoeveelheid clusters, vaak meer dan het verwachte aantal sprekers, en convergeren op een iteratieve manier naar een optimaal aantal clusters die gewoonlijk overeen komt met de hoeveelheid sprekers \autocite{AngueraMiro2012}. Top-down modellen worden geïnitialiseerd met een klein aantal clusters, gewoonlijk een cluster, en convergeren dan ook op een iteratieve manier naar een optimaal aantal clusters \autocite{AngueraMiro2012}. Volgens \textcite{AngueraMiro2012} worden de bottom-up modellen het vaakst gebruikt.
+Wanneer gezocht wordt naar manieren om stemmen te onderscheiden, is "speaker diarization`` een term die vaak vermeld wordt. Speaker diarization wordt beschreven als het bepalen wie wanneer spreekt in een audio of video opname waarvaan niet geweten is hoe vaak gesproken wordt en hoeveel sprekers aanwezig zijn \autocite{AngueraMiro2012}. Het feit dat er onbekende factoren in de fragmenten aanwezig zijn, zorgt ervoor dat unsupervised identificatie van elke spreker in een audio fragment en de intervallen waarin deze spreker actief is, vereist zijn \autocite{AngueraMiro2012}. Volgens \textcite{AngueraMiro2012} kunnen de speaker diarization technieken op gedeeld worden in twee categorieën, namelijk bottom-up en top-down modellen. Bottom-up modellen worden geïnitialiseerd met een grote hoeveelheid clusters, vaak meer dan het verwachte aantal sprekers, en convergeren op een iteratieve manier naar een optimaal aantal clusters die gewoonlijk overeen komt met de hoeveelheid sprekers \autocite{AngueraMiro2012}. Top-down modellen worden geïnitialiseerd met een klein aantal clusters, gewoonlijk één cluster, en convergeren dan ook op een iteratieve manier naar een optimaal aantal clusters \autocite{AngueraMiro2012}. Volgens \textcite{AngueraMiro2012} worden de bottom-up modellen het vaakst gebruikt.
 
 In \textcite{Khoma2023} wordt ook gesproken over twee categorieën van diarization, maar hier worden ze anders opgedeeld. De eerste categorie die in \textcite{Khoma2023} vermeld wordt is unsupervised diarization. Deze techniek maakt gebruik van unsupervised machine learning algoritmen om elke spreker een label te geven waarbij niet geweten is welke persoon bij welk label hoort \autocite{Khoma2023}. De tweede categorie is supervised diarization, waarin diarization methoden gecombineerd worden met identificatie technieken om zo een of meerdere personen uit een opname te kunnen herkennen \autocite{Khoma2023}. Deze techniek heeft als belangrijke eigenaardigheid dat het nodig is om de uitingen van meer dan een persoon te analyseren\autocite{Khoma2023}. Unsupervised diarization maakt gebruik van clustering methodes waarbij gelijkaardige segmenten onderverdeeld worden in categorieën, terwijl supervised diarization gebruik maakt van classificatie, waarbij de verschillende segmenten vergeleken worden met stemvoorbeelden \autocite{Khoma2023}.
 
-\textcite{Zhang2018} stelt dat de meeste diarization systemen bestaan uit maar niet gelimiteerd zijn tot de volgende relatief onafhankelijke componenten:
+\textcite{Zhang2018} stelt dat de meeste diarization systemen bestaan uit, maar niet gelimiteerd zijn tot, de volgende relatief onafhankelijke componenten:
 \begin{itemize}
-	\item Een spraak segmentatie module die de delen verwijderd waarin niet gesproken wordt en de invoer uitingen in kleine segmenten verdeeld.
+	\item Een spraak segmentatie module die de delen verwijdert waarin niet gesproken wordt en de invoer uitingen in kleine segmenten verdeelt.
 	\item Een module die embeddings zoals spreker factoren, i-vectoren of d-vectoren extraheert uit de kleine segmenten.
-	\item Een clustering module die bepaald hoeveel sprekers in een audio fragment aanwezig zijn en de identiteiten van deze sprekers toewijst aan elk segment.
+	\item Een clustering module die bepaalt hoeveel sprekers in een audio fragment aanwezig zijn en de identiteiten van deze sprekers toewijst aan elk segment.
 	\item Een hersegmentatie module die de resultaten van de diarizatie verder verfijnt door extra beperkingen toe te voegen.
 \end{itemize}
 
-Speaker diarization is een techniek die gebruikt kan worden voor verschillende doeleinden, zoals o.a. spreker indexering, herkennen van een spreker en hulp bij speech-to-text transcriptie \autocite{AngueraMiro2012}. Dit maakt het een zeer interessante techniek om te gebruiken voor deze bachelorproef. De hieronder besproken modellen zijn dus ook speaker diarization modellen.
+Speaker diarization is een techniek die gebruikt kan worden voor verschillende doeleinden, zoals o.a. spreker indexering, herkennen van een spreker en hulp bij speech-to-text transcriptie \autocite{AngueraMiro2012}. Dit maakt het een zeer interessante techniek om te gebruiken voor deze bachelorproef. De modellen die besproken worden in sectie \ref{sec:bestaande-modellen} zijn dus ook speaker diarization modellen.
 
-Ongeacht hoe de diarization aangepakt wordt, zijn er ook manieren om de accuraatheid van deze aanpak te meten.  \textcite{Park2021} Spreekt over drie "evaluation metrics", namelijk:
+Ongeacht hoe de diarization aangepakt wordt, zijn er ook manieren om de accuraatheid van deze aanpak te meten.  \textcite{Park2021} Spreekt over drie ``evaluation metrics", namelijk:
 \begin{itemize}
 	\item Diarization Error Rate (DER)
 	\item Jaccard Error Rate (JER)
 	\item World-level DER
 \end{itemize}
-DER is de populairste methode om de accuraatheid van een model te bepalen. De accuraatheid wordt berekend door de som te nemen van de gemiste spraakdetectie, het labelen van de verkeerde spreker en het vals alarm voor spraak en dit wordt gedeeld door de totale tijd. DER is een inschatting voor het geheel. \autocite{Park2021}
+DER is de populairste methode om de accuraatheid van een model te bepalen. De accuraatheid wordt berekend door de som te nemen van de gemiste spraakdetectie, het labelen van de verkeerde spreker en het vals alarm voor spraak. Dit wordt gedeeld door de totale tijd. DER is een inschatting voor het geheel. \autocite{Park2021}
 
-JER heeft als doel om elke spreker hetzelfde gewicht te geven in de evaluatie door rekening te houden met de tijd die een spreker aan bod komt en het aantal sprekers in het audio fragment\autocite{Park2021}.
+JER heeft als doel om elke spreker hetzelfde gewicht te geven in de evaluatie door rekening te houden met de tijd dat een spreker aan bod komt en het aantal sprekers in het audio fragment\autocite{Park2021}.
 
 World-level DER wordt voornamelijk gebruikt om de fouten te meten die aan de output transcriptie kant veroorzaakt worden. Het bekijkt de afwijking tussen de DER en de accuraatheid van de uiteindelijke transcriptie, aangezien de duur van het spreken niet altijd in lijn ligt met de grenzen van woorden. \autocite{Park2021}
 
 
 \section{Reeds bestaande modellen}
+\label{sec:bestaande-modellen}
 Wanneer het aankomt op reeds bestaande modellen, moet er gezocht worden naar twee zaken. De eerste is meer voor de hand liggend, namelijk modellen die instaan voor de speaker diarization. De tweede is echter ook belangrijk, namelijk modellen die instaan om de uitkomst van de eerste modellen te evalueren. Deze zijn belangrijk om te weten of het scheiden van de stemmen succesvol gebeurd is en te bepalen hoe goed het model is.
 
 \subsection{Diarization modellen}
@@ -65,7 +66,7 @@ Voor deze bachelorproef worden verschillende modellen overwogen om er zo een geg
 In deze paper wordt een recentere versie gebruikt, namelijk versie 3.0. Het grootste verschil met versie 2.1 zit in het feit dat er offline speaker diarization toegevoegd werd \textcite{Bredin2024}.
 
 %TODO NetVLAD opzoeken en uitleggen
-Een tweede model is een model dat VGG-Speaker-Recognition en UIS-RNN combineert \footnote{Code: \url{https://github.com/taylorlu/Speaker-Diarization}}. VGG-Speaker-Recognition \footnote{Code VGG-Speaker-Recognition: \url{https://github.com/WeidiXie/VGG-Speaker-Recognition}} is een Keras implementatie van \textcite{Xie2019}, een paper die focust op het herkennen van sprekers "in the wild". Om dit te bereiken wordt gefocust op een combinatie tussen Convolutionele Neurale Netwerken (CNNs) en een dictionary-based NetVLAD laag, waarin de CNNs bekend staan om lokale patronen te herkennen en de NetVLAD laag getraind kan worden om informatie in een invoer van willekeurige grootte te aggregeren in een descriptor van vaste grootte zodat de uiteindelijke representatie van de uiting niet wordt beïnvloed door irrelevante informatie \autocite{Xie2019}.
+Een tweede model is een model dat VGG-Speaker-Recognition en UIS-RNN combineert \footnote{Code: \url{https://github.com/taylorlu/Speaker-Diarization}}. VGG-Speaker-Recognition \footnote{Code VGG-Speaker-Recognition: \url{https://github.com/WeidiXie/VGG-Speaker-Recognition}} is een Keras implementatie van \textcite{Xie2019}, een paper die focust op het herkennen van sprekers ``in the wild". Om dit te bereiken wordt gefocust op een combinatie tussen Convolutionele Neurale Netwerken (CNNs) en een dictionary-based NetVLAD laag, waarin de CNNs bekend staan om lokale patronen te herkennen en de NetVLAD laag getraind kan worden om informatie in een invoer van willekeurige grootte te aggregeren in een descriptor van vaste grootte, zodat de uiteindelijke representatie van de uiting niet wordt beïnvloed door irrelevante informatie \autocite{Xie2019}.
 \textcite{Xie2019} stelt dat een ideaal model voor spreker herkenning drie eigenschappen moet hebben, namelijk:
 \begin{enumerate}
 	\item Het moet fragmenten met willekeurige lengtes als invoer nemen en een descriptor met vaste lengte als uitvoer geven.
@@ -73,14 +74,14 @@ Een tweede model is een model dat VGG-Speaker-Recognition en UIS-RNN combineert 
 	\item De descriptor moet discriminerend zijn, wat wil zeggen dat de afstand tussen de descriptoren van verschillende sprekers groter is dan de afstand tussen die van dezelfde spreker.
 \end{enumerate}
 Om hieraan te voldoen gebruikt \textcite{Xie2019} een gemodificeerd ResNet op een volledig convolutionele manier gevolgd door een NetVLAD/GhostVLAD laag.\\
-UIS-RNN \footnote{Code UIS-RNN: \url{https://github.com/google/uis-rnn}} wordt besproken in \textcite{Zhang2018}, waarin een fully supervised diarization methode voorgesteld wordt. \textcite{Zhang2018} stelt dat UIS-RNN staat voor "unbounded interleaved-state recurrent neural network" gebaseerd op de volgende feiten:
+UIS-RNN \footnote{Code UIS-RNN: \url{https://github.com/google/uis-rnn}} wordt besproken in \textcite{Zhang2018}, waarin een fully supervised diarization methode voorgesteld wordt. \textcite{Zhang2018} stelt dat UIS-RNN staat voor ``unbounded interleaved-state recurrent neural network" gebaseerd op de volgende feiten:
 \begin{itemize}
 	\item Elke spreker wordt voorgesteld door een instantie van RNN en deze instanties delen dezelfde parameters
-	\item Er kan een onbeperkt ("unbounded") aantal RNN instanties gegenereerd worden.
+	\item Er kan een onbeperkt (``unbounded") aantal RNN instanties gegenereerd worden.
 	\item De toestanden van verschillende RNN instanties, die overeenkomen met verschillende sprekers, worden in het tijdsdomein met elkaar verbonden.
 \end{itemize}
 
 Een derde model dat in overweging genomen wordt is Simple Diarizer \footnote{Code Simple Diarizer: \url{https://github.com/cvqluu/simple_diarizer/tree/main}}. Dit is een pipeline die opgebouwd is uit verschillende voorgetrainde modellen en ontwikkeld is met het oog op zo eenvoudig mogelijk van een audio input naar gediarizeerde segmenten te gaan \autocite{Chau}
 
-\subsection{Evaluatie van modellen voor diarization}
+\subsection{Evaluatie van diarization modellen}
 Een model dat gebruikt zal worden om de accuraatheid van de bovenstaande modellen te bepalen is pyannote.metrics \footnote{Code pyannote.metrics: \url{https://github.com/pyannote/pyannote-metrics}} en is samen ontwikkeld met de eerste versie van het model van \textcite{Bredin2023} dat hierboven beschreven werd. Pyannote.metrics is een open-source Python library voor reproduceerbare evaluatie, diagnostiek en foutenanalyse van speaker diarization systemen en berekent de DER \autocite{Bredin2017}. Tests zullen moeten uitwijzen of dit framework ook gebruikt kan worden voor andere modellen dan pyannote-audio.

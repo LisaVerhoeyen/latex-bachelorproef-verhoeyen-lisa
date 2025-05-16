@@ -8,11 +8,11 @@ In dit hoofdstuk wordt besproken wat gedaan werd tijdens dit onderzoek, wat de r
 
 \section{Geteste modellen}
 \label{sec:modellen}
-Na het opzoeken van bestaande opties werd gekozen om 3 verschillende modellen uit te testen. Het eerste model dat getest werd is Speaker-Diarization van \textcite{DongLu}. Dit is een model dat gebaseerd is op VGG-Speaker-recognition en UIS-RNN. Na wat onderzoek bleek dat de combinatie van beide frameworks en het trainen zelf nog van nul zouden moeten gebeuren, wat veel tijd in beslag zou nemen, dus werd er gekozen om hier voor deze bachelorproef geen gebruik van te maken.
+Na het opzoeken van bestaande opties werd gekozen om 3 verschillende modellen uit te testen. Het eerste model dat getest werd, is Speaker-Diarization van \textcite{DongLu}. Dit is een model dat gebaseerd is op VGG-Speaker-recognition en UIS-RNN. Na wat extra onderzoek bleek echter dat de combinatie van beide frameworks en het trainen zelf nog van nul zouden moeten gebeuren, wat veel tijd in beslag zou nemen, dus werd er gekozen om hier voor deze bachelorproef geen gebruik van te maken.
 
-Het tweede model dat getest werd, is Simple Diarizer van \textcite{Chau}. Dit leek op het eerste zicht een goed model, maar na tijdens het testen bleek dat dit model gebruik maakt van SpeechBrain. SpeechBrain is een "all-in-one speech toolkit" die ontwikkeld is om onderzoek naar en het ontwikkelen van neurale spraakverwerkingstechnologieën gemakkelijker te maken \autocite{speechbrain}. Het gebruik hiervan bracht echter het probleem met zich mee dat admin rechten nodig waren om er gebruik van te kunnen maken, dus werd er besloten om toch niet met dit model verder te gaan.
+Het tweede model dat getest werd, is Simple Diarizer van \textcite{Chau}. Dit leek op het eerste zicht een goed model, maar na tijdens het testen bleek dat dit model gebruik maakt van SpeechBrain. SpeechBrain is een ``all-in-one speech toolkit" die ontwikkeld is om onderzoek naar en het ontwikkelen van neurale spraakverwerkingstechnologieën gemakkelijker te maken \autocite{speechbrain}. Het gebruik hiervan bracht echter het probleem met zich mee dat admin rechten nodig waren om er gebruik van te kunnen maken, dus werd er besloten om toch niet met dit model verder te gaan.
 
-Het laatste model dat getest werd was pyannote-audio van \textcite{Bredin2024}. Dit model werd getest op een Vlaams audio fragment en gaf als resultaat een de start- en eindtijden voor elke spreker weer. Er is echter geen optie voorzien om dit om te zetten naar audio-fragmenten. Dit probleem was eenvoudig op te lossen door een externe python library te gebruiken, namelijk pydub. Na het beluisteren van de audiofragmenten bleek dat deze nog niet zeer accuraat waren en dat er dus nog training nodig was, maar het resultaat was al een zeer goed begin. aangezien pyannote-audio voorzien is om nog verder getraind te worden, werd er gekozen om met dit model verder te gaan. De resultaten hiervan worden in de volgende secties besproken.
+Het laatste model dat getest werd was pyannote-audio van \textcite{Bredin2024}. Dit model werd getest op een Vlaams audio fragment en gaf als resultaat een de start- en eindtijden voor elke spreker weer. Er is echter geen optie voorzien om dit om te zetten naar audio-fragmenten. Dit probleem was eenvoudig op te lossen door een externe python library te gebruiken, namelijk pydub. Na het beluisteren van de audiofragmenten bleek dat deze nog niet zeer accuraat waren en dat er dus nog training nodig was, maar het resultaat was al een zeer goed begin. Aangezien pyannote-audio voorzien is om nog verder getraind te worden, werd er gekozen om met dit model verder te gaan. De resultaten hiervan worden in de volgende secties besproken.
 
 \section{Voorbereiden van de data}
 \label{sec:data}
@@ -61,9 +61,9 @@ De eerste stap in het trainingsproces is het inladen van de databank in de noteb
 	\item De pipeline die op Hugging Face staat ophalen \footnote{Pyannote speaker diarization pipeline op Hugging Face: \url{https://huggingface.co/pyannote/speaker-diarization-3.1}}
 	\item Gebruik maken van de offline pipeline
 \end{itemize}
-Hier werd gekozen voor het gebruik maken van de offline pipeline aangezien deze na het trainen opgeslagen moest kunnen worden voor implementatie in de applicatie, wat niet mogelijk moeilijker was met de online pipeline.
+Hier werd gekozen voor het gebruik maken van de offline pipeline, aangezien deze na het trainen opgeslagen moest kunnen worden voor implementatie in de applicatie, wat moeilijker was met de online pipeline.
 
-Na het opzetten van de databank en het ophalen van de pipeline wordt de accuraatheid van de pipeline berekend door gebruik te maken van pyannote-metrics. Hiervoor creëert de pipeline eerst een RTTM bestand van de audio bestanden in de test subset van de databank. Hierna wordt dit vergeleken met de RTTM bestanden in de test subset en op basis daarvan wordt de DER berekend. De code die hiervoor gebruikt wordt, is te zien in codefragment \ref{code:pyannote-metrics}.
+Na het inladen van de databank en het ophalen van de pipeline wordt de accuraatheid van de pipeline berekend door gebruik te maken van pyannote-metrics. Hiervoor creëert de pipeline eerst een RTTM bestand van de audio bestanden in de test subset van de databank. Hierna wordt dit vergeleken met de RTTM bestanden in de test subset en op basis daarvan wordt de DER berekend. De code die hiervoor gebruikt wordt, is te zien in codefragment \ref{code:pyannote-metrics}.
 
 \begin{listing}
 	\begin{minted}{python}
@@ -102,7 +102,7 @@ pretrained_segm_model.set-up()
 	\caption[Model klaarmaken voor training]{\label{code:setup-training}Code die gebruikt wordt om het model klaar te maken voor training.}
 \end{listing}
 
-Voor het trainen zelf gebeurt door gebruik te maken van PyTorch Lightning \footnote{Documentatie voor PyTorch Lightning; \url{https://lightning.ai/docs/pytorch/stable/}}. Hiervoor wordt gebruik gemaakt van een Adam optimizer en een checkpoint voor EarlyStopping. De set-up hiervoor wordt getoond in codefragment \ref{code:pl-setup}.
+Het trainen zelf gebeurt door gebruik te maken van PyTorch Lightning \footnote{Documentatie voor PyTorch Lightning; \url{https://lightning.ai/docs/pytorch/stable/}}. Hiervoor wordt gebruik gemaakt van een Adam optimizer en een checkpoint voor EarlyStopping. De set-up hiervoor wordt getoond in codefragment \ref{code:pl-setup}.
 
 \begin{listing}
 	\begin{minted}{python}
@@ -146,7 +146,7 @@ trainer = pl.Trainer(
 
 Na deze stappen kan de effectieve training gebeuren en wordt het beste model uit de checkpoints opgeslagen.
 
-Na het trainen wordt de pipeline stap voor stap opnieuw opgebouwd en gefinetuned. Tijdens de eerste stap wordt een pipeline gecreëerd met enkel het getrainde segmentatie model en OracleClustering als clustering methode. Als parameters wordt enkel gebruik gemaakt van "min\_duration\_off" op 0.0 seconden voor het segmentatie model, wat ervoor zorgt dat gebieden zonder spraak die korter zijn dan 0.0 seconden opgevuld worden. Hierna wordt een optimizer opgezet voor de nieuwe pipeline met de development subset van de databank als referentie. Deze optimizer wordt gebruikt om de best mogelijke segmentatie drempel te vinden. De code hiervoor kan teruggevonden worden in codefragment \ref{code:eerste-finetuning}.
+Na het trainen wordt de pipeline stap voor stap opnieuw opgebouwd en gefinetuned. Tijdens de eerste stap wordt een pipeline gecreëerd met enkel het getrainde segmentatie model en OracleClustering als clustering methode. Als parameters wordt enkel gebruik gemaakt van "min\_duration\_off`` op 0.0 seconden voor het segmentatie model, wat ervoor zorgt dat gebieden zonder spraak die korter zijn dan 0.0 seconden opgevuld worden. Hierna wordt een optimizer opgezet voor de nieuwe pipeline met de development subset van de databank als referentie. Deze optimizer wordt gebruikt om de best mogelijke segmentatie drempel te vinden. De code hiervoor kan teruggevonden worden in codefragment \ref{code:eerste-finetuning}.
 
 \begin{listing}
 	\begin{minted}{python}
@@ -205,7 +205,7 @@ best_clust_threshold = optimizer.best_params["clustering"]["threshold"]
 	\caption[Set-up voor tweede finetuning]{\label{code:tweede-finetuning}Tweede stap in het finetuning proces}
 \end{listing}
 
-Na de tweede finetuning stap wordt de pipeline opnieuw opgesteld zoals in de tweede stap van de finetuning. Deze pipeline wordt geïnstantieerd met dezelfde parameters als in de tweede stap en de beste drempel voor de clustering, zoals getoond wordt in codefragment \ref{code:finale-parameters}. Deze pipeline wordt dan getest met pyannote-metrics om te controleren of de DER lager ligt dan in het oorspronkelijke model, analoog aan codefragment \ref{code:pyannote-metrics}. Hierna worden de parameters opgeslagen in een YAML bestand zodat de getrainde pipeline later opnieuw kan gebruikt worden zoals besproken wordt in hoofdstuk \ref{sec:gebruik}.
+Na de tweede finetuning stap wordt de pipeline opnieuw opgesteld zoals in de tweede stap van de finetuning. Deze pipeline wordt geïnstantieerd met dezelfde parameters als in de tweede stap en de beste drempelwaarde voor de clustering, zoals getoond wordt in codefragment \ref{code:finale-parameters}. Deze pipeline wordt dan geëvalueerd met pyannote-metrics om te controleren of de DER lager ligt dan in het oorspronkelijke model, analoog aan codefragment \ref{code:pyannote-metrics}. Hierna worden de parameters opgeslagen in een YAML bestand zodat de getrainde pipeline later opnieuw kan gebruikt worden zoals besproken wordt in hoofdstuk \ref{sec:gebruik}.
 
 \begin{listing}
 	\begin{minted}{python}
@@ -227,13 +227,13 @@ finetuned_pipeline.instantiate({
 \subsection{Resultaten van het trainen}
 \label{subsec:train-res}
 
-De dataset voor het trainen was in het begin opgebouwd met duidelijke audio van televisie programma's. Het trainen op deze data gaf veelbelovende resultaten. De Diarization Error Rate (DER) voor deze data was voor het trainen gelijk aan 9.2\% en door het trainen met deze audio kon de DER verlaagd naar 7.4\%. Als extra test werd hierna de pipeline toegepast op een audio van een Vlaams televisieprogramma en een audio bestand dat opgenomen werd in het Zorglab. Hier bleek dat de stemmen in de audio van het televisieprogramma vrij accuraat gescheiden konden worden, maar dat dit helemaal niet het geval was voor de audio uit het Zorglab.
+De dataset voor het trainen was in het begin opgebouwd met duidelijke audio van televisie programma's. Het trainen op deze data gaf veelbelovende resultaten. De Diarization Error Rate (DER) voor deze data was voor het trainen gelijk aan 9.2\% en door het trainen met deze audio kon de DER verlaagd worden naar 7.4\%. Als extra test werd hierna de pipeline toegepast op een audio van een Vlaams televisieprogramma en een audio bestand dat opgenomen werd in het Zorglab. Hier bleek dat de stemmen in de audio van het televisieprogramma vrij accuraat gescheiden konden worden, maar dat dit helemaal niet het geval was voor de audio uit het Zorglab.
 
-Hierdoor werd besloten om de databank aan te passen. Er werd data uit het Zorglab toegevoegd aan alle sub-sets in de databank en het trainingsproces werd opnieuw uitgevoerd. Hierbij was de DER van de pipeline voor het trainen gelijk aan 20.9\%, wat significant hoger is dan bij de data uit de eerste versie van de databank. Na het trainen van het model op de nieuwe data was de DER hoger in plaats van lager, namelijk 56.4\%, wat een onverwachte uitkomst was. In en poging om dit resultaat te verbeteren, werd er extra data toegevoegd aan de sub-set voor het trainen en geëxperimenteerd met het aantal epochs in max\_epoch van het trainen. Het beste resultaat dat hierdoor bekomen werd was een DER van 50.6\% bij een waarde van 50 voor max\_epochs.
+Hierdoor werd besloten om de databank aan te passen. Er werd data uit het Zorglab toegevoegd aan alle subsets in de databank en het trainingsproces werd opnieuw uitgevoerd. Hierbij was de DER van de pipeline voor het trainen gelijk aan 20.9\%, wat significant hoger is dan bij de data uit de eerste versie van de databank. Na het trainen van het model op de nieuwe data was de DER hoger in plaats van lager, namelijk 56.4\%, wat een onverwachte uitkomst was. In een poging om dit resultaat te verbeteren, werd er extra data toegevoegd aan de subset voor het trainen en werd geëxperimenteerd met het aantal epochs in \lstinline{max_epochs} van het trainen. Het beste resultaat dat hierdoor bekomen werd was een DER van 50.6\% bij een waarde van 50 voor \lstinline{max_epochs}.
 
 \section{Gebruik maken van het getrainde model}
 \label{sec:gebruik}
-Om de getrainde pipeline te gebruiken in een andere file, moet deze opnieuw opgebouwd worden met de het getrainde model en de parameters die opgeslagen werden na de finetuning. Dit gebeurt in 2 stappen, aangezien de drempelwaardes die gevonden worden tijdens het finetunen geen parameters zijn in de oorspronkelijke pipeline. De eerste stap haalt de opgeslagen pipeline op en wordt geïnstantieerd met alle opgeslagen parameters behalve de drempelwaarden. Dit wordt getoond in codefragment \ref{code:eerste-stap}.
+Om de getrainde pipeline te gebruiken in een andere file, moet deze opnieuw opgebouwd worden met de het getrainde model en de parameters die opgeslagen werden na de finetuning. Dit gebeurt in twee stappen, aangezien de drempelwaardes die gevonden worden tijdens het finetunen geen parameters zijn in de oorspronkelijke pipeline. De eerste stap haalt de opgeslagen pipeline op en wordt geïnstantieerd met alle opgeslagen parameters behalve de drempelwaarden. Dit wordt getoond in codefragment \ref{code:eerste-stap}.
 
 De tweede stap creëert een pipeline met de modellen uit de opgehaalde pipeline en wordt geïnstantieerd met alle opgeslagen parameters, inclusief de drempelwaarden. Dit wordt getoond in codefragment \ref{code:tweede-stap}.
 
@@ -288,7 +288,7 @@ pipeline.instantiate({
 	\caption[Recreëren van de getrainde pipeline met alle parameters]{\label{code:tweede-stap}Recreëren en instantiëren van de pipeline na trainen en finetunen met alle parameters}
 \end{listing}
 
-Na deze stappen is de pipeline klaar voor gebruik. Om een audio bestand te splitsen, wordt het pad naar het bestand meegegeven als argument aan de pipeline. Hierna wordt een RTTM bestand gecreëerd aan de hand van de code uit codefragment \ref{code:maak-rttm}. Dit bestand wordt dan gebruikt om aparte audio bestanden te maken per instantie van een spreker in codefragment \ref{code:korte-bestanden}. Uiteindelijk worden deze audio fragmenten gecombineerd om audio bestanden te maken per spreker, zoals getoond in codefragment \ref{code:audio-per-spreker}.
+Na deze stappen is de pipeline klaar voor gebruik. Om een audio bestand te splitsen, wordt het pad naar het bestand als argument meegegeven aan de pipeline. Hierna wordt een RTTM bestand gecreëerd aan de hand van de code uit codefragment \ref{code:maak-rttm}. Dit bestand wordt dan gebruikt om aparte audio bestanden te maken per instantie van een spreker in codefragment \ref{code:korte-bestanden}. Uiteindelijk worden deze audio fragmenten gecombineerd om audio bestanden te maken per spreker, zoals getoond in codefragment \ref{code:audio-per-spreker}.
 
 \begin{listing}
 	\begin{minted}{python}
@@ -343,4 +343,4 @@ for speaker in speakers:
 
 \section{Implementatie in de applicatie}
 \label{sec:implementatie}
-Aangezien de resultaten van de pipeline na het trainen niet goed genoeg waren, is er nog geen implementatie gebeurd van het model.
+Aangezien de resultaten van de pipeline na het trainen niet goed genoeg waren, werd het model nog niet geïmplementeerd in de applicatie.
