@@ -19,7 +19,7 @@ Datzelfde jaar werd door \textcite{Gussem2022} geconcludeerd dat elderspeak gede
 Later onderzocht \textcite{Daems2023} hoe de detectie van elderspeak verbeterd kan worden door het toepassen van een ruisfilter en een stiltefilter. De conclusie omtrent de ruisfilter was dat deze zeker helpt, maar niet alle ruis uit het signaal kan verwijderen \autocite{Daems2023}. Om dit te verbeteren opperde \textcite{Daems2023} dat het gebruik van meerdere microfoons zou kunnen helpen.
 Wanneer het gaat over de stiltefilter, besloot \textcite{Daems2023} dat deze succesvol de stiltes kan detecteren en analyseren, wat het mogelijk maakt om stiltes te verwijderen en andere parameters te verbeteren. \textcite{Daems2023} concludeerde echter ook dat factoren zoals geluidskwaliteit, gesproken dialect, linguïstische verschillen en het doel voor de spraakherkenning de kwaliteit ervan ook sterk beïnvloeden.
 
-\textcite{Branden2024} zocht naar verdere mogelijkheden om de accuraatheid van elderspeak detectie te verhogen. Uit dit onderzoek kon geconcludeerd worden dat het gebruik van een POS-tagger ervoor zorgde dat de accuraatheid significant verhoogd werd, namelijk van 92.71\% naar 99.48\% \autocite{Branden2024}. POS-tagging is een NLP techniek waarbij woordsoorten worden toegekend aan woorden of tokens en hierbij ook rekening houdt met de context \autocite{Branden2024}.
+\textcite{Branden2024} zocht naar verdere mogelijkheden om de accuraatheid van elderspeak detectie te verhogen. Uit dit onderzoek kon geconcludeerd worden dat het gebruik van een POS-tagger ervoor zorgde dat de accuraatheid van de detectie van woordsoorten significant verhoogd werd, namelijk van 92.71\% naar 99.48\%, waarbij het oude algoritme enkel beter presteerde op vlak van verkleinwoorden \autocite{Branden2024}. POS-tagging is een NLP techniek waarbij woordsoorten worden toegekend aan woorden of tokens en hierbij ook rekening houdt met de context \autocite{Branden2024}.
 
 Het onderzoek van \textcite{Schryver2024} had als doel om spraak naar tekst om te zetten. Hieruit moest echter de conclusie getrokken worden dat het accuraat omzetten van gesproken naar geschreven tekst nog niet mogelijk is \autocite{Schryver2024}. \textcite{Schryver2024} onderzocht ook of er mogelijkheden zijn om de performantie van de applicatie te kunnen verbeteren aangezien deze momenteel eerder traag is, maar de conclusie was dat dit niet het geval lijkt te zijn.
 
@@ -32,7 +32,7 @@ Door \textcite{Khoma2023} wordt ook gesproken over twee categorieën van diariza
 \textcite{Zhang2018} stelt dat de meeste diarization systemen bestaan uit, maar niet gelimiteerd zijn tot, de volgende relatief onafhankelijke componenten:
 \begin{itemize}
 	\item Een spraak segmentatie module die de delen verwijdert waarin niet gesproken wordt en de invoer uitingen in kleine segmenten verdeelt.
-	\item Een module die embeddings zoals spreker factoren, i-vectoren of d-vectoren extraheert uit de kleine segmenten.
+	\item Een module die embeddings zoals spreker factoren extraheert uit de kleine segmenten.
 	\item Een clustering module die bepaalt hoeveel sprekers in een audio fragment aanwezig zijn en de identiteiten van deze sprekers toewijst aan elk segment.
 	\item Een hersegmentatie module die de resultaten van de diarizatie verder verfijnt door extra beperkingen toe te voegen.
 \end{itemize}
