@@ -16,7 +16,7 @@ Het laatste model dat getest werd was pyannote-audio van \textcite{Bredin2024}. 
 
 \section{Voorbereiden van de data}
 \label{sec:data}
-Om een pyannote.audio model te trainen is een pyannote databank nodig. Hoe je deze juist kan opstellen staat beschreven op \textcite{BredinDatabase} voor verschillende types modellen. Hier wordt specifiek gebruik gemaakt van de set-up voor een het trainen van een speaker diarization model.
+Om een pyannote.audio model te trainen is een pyannote databank nodig. Hoe je deze juist kan opstellen staat beschreven op \textcite{BredinDatabase} voor verschillende types modellen. Hier wordt specifiek gebruik gemaakt van de set-up voor het trainen van een speaker diarization model.
 
 De basis van de databank is een YAML bestand waarin een databank en een protocol staan. De databank verwijst naar de plaats waar de audio bestanden opgeslagen staan in de vorm van wav bestanden. Het protocol bestaat uit 3 subsets, namelijk een train subset die gebruikt wordt om het model te trainen, een development subset die gebruikt wordt als validatie en een test subset die gebruikt wordt voor de evaluatie van het model. Elk van deze subsets verwijzen naar een .rttm, .uem en .lst bestand. Het .rttm bestand bevat de annotatie van de audiofragmenten die gebruikt worden in de subset, het .uem bestand bevat de informatie over welke delen van de audio bestanden geannoteerd zijn voor de subset en het .lst bestand bevat een lijst met de namen van bestanden die gebruikt worden in de subset. De uiteindelijke set-up van het YAML bestand is te zien in codefragment ~\ref{code:config-file}.
 
