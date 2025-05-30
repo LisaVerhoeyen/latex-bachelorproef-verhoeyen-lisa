@@ -60,8 +60,8 @@ Bij de eerste versie van de databank werden niet alle audio bestanden die gevond
         \toprule
                              & \multicolumn{1}{l}{\textbf{Aantal bestanden}} & \multicolumn{1}{l}{\textbf{Aantal lijnen}} \\ \midrule
         \textbf{Train}       & 7                                             & 129                                        \\
-        \textbf{Test}        & 2                                             & 16                                         \\
-        \textbf{Development} & 1                                             & 23                                         \\ \bottomrule
+        \textbf{Test}    & 2                                             & 16                     \\
+        \textbf{Development} & 1                                             & 23                     \\ \bottomrule
     \end{tabular}
     \caption[Verdeling data eerste versie databank]{\label{tbl:verdeling-v1}Verdeling van de data over de train, test en validatie bestanden in de eerste versie van de databank}
 \end{table}
@@ -72,9 +72,9 @@ Voor de tweede versie van de databank werd de data uit de audiobestanden van het
     \begin{tabular}{@{}lcc@{}}
         \toprule
         & \multicolumn{1}{l}{\textbf{Aantal bestanden}} & \multicolumn{1}{l}{\textbf{Aantal lijnen}} \\ \midrule
-        \textbf{Train}       & 12                                            & 316                                        \\
-        \textbf{Test}        & 2                                             & 37                                         \\
-        \textbf{Development} & 2                                             & 41                                         \\ \bottomrule
+        \textbf{Train}       & 12                      & 316                                        \\
+        \textbf{Test}    & 2                                             & 37                     \\
+        \textbf{Development} & 2                                             & 41                     \\ \bottomrule
     \end{tabular}
     \caption[Verdeling data tweede versie databank]{\label{tbl:verdeling-v2}Verdeling van de data over de train, test en validatie bestanden in de tweede versie van de databank}
 \end{table}
@@ -86,8 +86,8 @@ Voor de derde versie van de databank werd teruggegrepen naar de data uit de eers
         \toprule
         & \multicolumn{1}{l}{\textbf{Aantal bestanden}} & \multicolumn{1}{l}{\textbf{Aantal lijnen}} \\ \midrule
         \textbf{Train}       & 6                                             & 132                                        \\
-        \textbf{Test}        & 2                                             & 17                                         \\
-        \textbf{Development} & 2                                             & 19                                         \\ \bottomrule
+        \textbf{Test}    & 2                                             & 17                     \\
+        \textbf{Development} & 2                                             & 19                     \\ \bottomrule
     \end{tabular}
     \caption[Verdeling data tweede versie databank]{\label{tbl:verdeling-v3}Verdeling van de data over de train, test en validatie bestanden in de derde versie van de databank}
 \end{table}
@@ -151,7 +151,7 @@ Het trainen zelf gebeurt door gebruik te maken van PyTorch Lightning \footnote{D
 	\begin{minted}{python}
 def configure_optimizers(self):
   return Adam(self.parameters(), lr=1e-4)
-  
+    
 pretrained_segm_model.configure_optimizers = MethodType(configure_optimizers, pretrained_segm_model)
 
 monitor, direction = task.val_monitor
@@ -208,7 +208,7 @@ best_loss = 1.0
 for i, iteration in enumerate(iterations):
   print(f"Best segmentation threshold so far: {iteration['params']['segmentation']['threshold']}")
   if i > 50: break
-  
+    
 best_segm_threshold = optimizer.best_params["segmentation"]["threshold"]
 	\end{minted}
 	\caption[Set-up voor eerste finetuning]{\label{code:eerste-finetuning}Eerste stap in het finetuning proces}
@@ -242,7 +242,7 @@ best_loss = 1.0
 for i, iteration in enumerate(iterations):
   print(f"Best clustering threshold so far: {iteration['params']['clustering']['threshold']}")
   if i > 50: break
-  
+    
 best_clust_threshold = optimizer.best_params["clustering"]["threshold"]
 	\end{minted}
 	\caption[Set-up voor tweede finetuning]{\label{code:tweede-finetuning}Tweede stap in het finetuning proces}
@@ -365,7 +365,9 @@ for turn, _, speaker in diarization.itertracks(yield_label=True):
     os.mkdir(f"./results/audio/{file_name}/{speaker}")
 
   segment = audio[turn.start * 1000:turn.end * 1000]  # Convert seconds to milliseconds
-  segment.export(f"./results/audio/{file_name}/{speaker}/speaker_{speaker}_{turn.start:.1f}-{turn.end:.1f}.wav", format="wav")
+  segment.export(f"./results/audio/{file_name}/{speaker}/
+        speaker_{speaker}_{turn.start:.1f}-{turn.end:.1f}.wav",
+        format="wav")
 	\end{minted}
 	\caption[Code om korte audio bestanden te creëren]{\label{code:korte-bestanden}Code die afzonderlijke audio fragmenten creëert gebaseerd op een RTTM bestand}
 \end{listing}
@@ -380,7 +382,8 @@ for speaker in speakers:
 
   combined = AudioSegment.from_file(f"./results/audio/{file_name}/{speaker}/{files_list[0]}")
   for i in range(1,len(files_list)):
-    combined = combined.append(AudioSegment.from_file(f"./results/audio/{file_name}/{speaker}/{files_list[i]}"), crossfade=0.0)
+    combined = combined.append(AudioSegment.from_file(
+        f"./results/audio/{file_name}/{speaker}/{files_list[i]}"), crossfade=0.0)
 
   combined.export(f"./results/audio/{file_name}_{speaker}.wav", format="wav")
 	\end{minted}
@@ -389,4 +392,6 @@ for speaker in speakers:
 
 \section{Implementatie in de applicatie}
 \label{sec:implementatie}
-Aangezien de resultaten van de pipeline na het trainen niet goed genoeg waren, werd het model nog niet geïmplementeerd in de applicatie.
+Aangezien de resultaten van de pipeline na het trainen niet goed genoeg waren, werd het model nog niet geïmplementeerd in de applicatie. Er werd wel een uitvoerbaar python script gemaakt dat het model gebruikt dat getraind werd op de derde versie van de databank. Dit script kan uitgevoerd worden via de command-line-interface en heeft als argument een pad nodig dat wijst naar een audio bestand. In het script wordt dan eerst de pipeline gecreëerd, zoals eerder getoond in codefragmenten \ref{code:eerste-stap} en \ref{code:tweede-stap}. Hierna worden het RTTM bestand en de aparte audiobestanden gecreëerd in een tijdelijke map, gebaseerd op de code die getoond werd in codefragmenten \ref{code:maak-rttm} en \ref{code:korte-bestanden}. Uiteindelijk worden dan de audiobestanden per spreker gecreëerd in een map ``results'', gebaseerd op de code die reeds getoond werd in codefragment \ref{code:audio-per-spreker}, en worden de bestanden in de tijdelijke folder verwijderd.
+
+Dit deel is op een zodanige manier opgebouwd dat als het model verder getraind zou worden, dit script eenvoudig met het nieuwe model gebruikt zou kunnen worden.
